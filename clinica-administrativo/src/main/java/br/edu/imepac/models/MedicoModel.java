@@ -21,7 +21,6 @@ public class MedicoModel {
     private String nome;
     @ManyToOne
     @JoinColumn(name = "id_especialidade")
-    @NotNull
     private EspecialidadeModel especialidade;
     @NotNull
     private String CRM;
