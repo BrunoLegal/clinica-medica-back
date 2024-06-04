@@ -16,7 +16,7 @@ public class MedicoController {
     @Autowired
     private MedicoService medicoService;
     @GetMapping
-    public ResponseEntity<List<MedicoDto>> listDoctor(){
+    public ResponseEntity<List<MedicoDto>> listDoctors(){
         List<MedicoDto> list = medicoService.findAll();
         if(list.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -25,11 +25,39 @@ public class MedicoController {
         }
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<MedicoDto> findDoctor(@PathVariable Long id){
+        MedicoDto medicoDto = medicoService.findById(id);
+        if(medicoDto != null){
+            return new ResponseEntity<>(medicoDto, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
     @PostMapping
-    @ResponseBody
     public ResponseEntity<MedicoDto> saveDoctor(@RequestBody MedicoCreateRequest medicoCreateRequest){
         MedicoDto medicoDto = medicoService.save(medicoCreateRequest);
         return new ResponseEntity<>(medicoDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<MedicoDto> updateDoctor(@RequestBody MedicoDto medicoData, @PathVariable Long id){
+        MedicoDto medicoDto = medicoService.update(id, medicoData);
+        if(medicoDto != null){
+            return new ResponseEntity<>(medicoDto, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteDoctor(@PathVariable Long id){
+        medicoService.delete(id);
     }
 
 }
