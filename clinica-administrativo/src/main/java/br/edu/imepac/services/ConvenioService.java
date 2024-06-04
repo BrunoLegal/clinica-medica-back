@@ -1,2 +1,8 @@
-package br.edu.imepac.services;public class ConvenioService {
+package br.edu.imepac.services;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class ConvenioService {
+
 }
