@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -15,7 +16,7 @@ public class MedicoService {
     @Autowired
     private MedicoRepository medicoRepository;
 
-    public MedicoDto salvarMedico(MedicoCreateRequest medicoCreateRequest){
+    public MedicoDto save(MedicoCreateRequest medicoCreateRequest){
         MedicoModel medicoModel = new MedicoModel();
         medicoModel.setCRM(medicoCreateRequest.getCrm());
         medicoModel.setNome(medicoCreateRequest.getNome());
@@ -32,11 +33,23 @@ public class MedicoService {
         return medicoDto;
     }
 
-    public MedicoModel buscaMedicoId(Long id){
-        return medicoRepository.findById(id).get();
+    public MedicoDto findById(Long id){
+        Optional<MedicoModel> optionalMedicoDto = medicoRepository.findById(id);
+        if(optionalMedicoDto.isPresent()){
+            MedicoModel medicoModel = optionalMedicoDto.get();
+            MedicoDto medicoDto = new MedicoDto();
+            medicoDto.setId(medicoModel.getId());
+            medicoDto.setNome(medicoModel.getNome());
+            medicoDto.setCrm(medicoModel.getCRM());
+            medicoDto.setEspecialidade(medicoModel.getEspecialidade());
+            return medicoDto;
+        }else{
+            return null;
+        }
+
     }
 
-    public List<MedicoDto> buscaTodosMedicos(){
+    public List<MedicoDto> findAll(){
         List<MedicoModel> listaModel = medicoRepository.findAll();
         return listaModel.stream().map(medico -> {
             MedicoDto medicoDto = new MedicoDto();
@@ -49,9 +62,31 @@ public class MedicoService {
 
     }
 
-    public void removerMedico(MedicoModel medicoModel, Long id){
-        medicoModel = buscaMedicoId(id);
-        medicoRepository.delete(medicoModel);
+    public void delete(Long id){
+        medicoRepository.deleteById(id);
+    }
+
+    public MedicoDto update (Long id, MedicoDto medicoData){
+        Optional<MedicoModel> optionalMedicoDto = medicoRepository.findById(id);
+        if(optionalMedicoDto.isPresent()){
+            MedicoModel medicoModel = optionalMedicoDto.get();
+            medicoModel.setNome(medicoData.getNome());
+            medicoModel.setCRM(medicoData.getCrm());
+            medicoModel.setEspecialidade(medicoData.getEspecialidade());
+
+            MedicoModel updatedModel = medicoRepository.save(medicoModel);
+
+            MedicoDto medicoDto = new MedicoDto();
+            medicoDto.setId(updatedModel.getId());
+            medicoDto.setNome(updatedModel.getNome());
+            medicoDto.setCrm(updatedModel.getCRM());
+            medicoDto.setEspecialidade(updatedModel.getEspecialidade());
+            return medicoDto;
+
+        }else{
+            return null;
+        }
+
     }
 
 
