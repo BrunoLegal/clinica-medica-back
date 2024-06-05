@@ -1,5 +1,6 @@
 package br.edu.imepac.services;
 
+import br.edu.imepac.dtos.MedicoDto;
 import br.edu.imepac.dtos.UsuarioCreateRequest;
 import br.edu.imepac.dtos.UsuarioDto;
 import br.edu.imepac.models.MedicoModel;
@@ -7,6 +8,10 @@ import br.edu.imepac.models.UsuarioModel;
 import br.edu.imepac.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -30,4 +35,48 @@ public class UsuarioService {
         usuarioDto.setLogin(savedUsuario.getLogin());
         return usuarioDto;
     }
+
+    public UsuarioDto update(UsuarioDto usuarioData, Long id){
+        Optional<UsuarioModel> usuarioSearch = usuarioRepository.findById(id);
+        if(usuarioSearch.isPresent()){
+            UsuarioModel usuarioModel = usuarioSearch.get();
+            usuarioModel.setSenha(usuarioData.getSenha());
+            usuarioModel.setLogin(usuarioData.getLogin());
+
+            UsuarioDto usuarioDto = new UsuarioDto();
+            usuarioDto.setLogin(usuarioModel.getLogin());
+            usuarioDto.setId(usuarioDto.getId());
+            usuarioDto.setSenha(usuarioDto.getSenha());
+            return usuarioDto;
+        }else{
+            return null;
+        }
+    }
+
+    public List<UsuarioDto> findAll(){
+        List<UsuarioModel> usuarioModels = usuarioRepository.findAll();
+        return usuarioModels.stream().map(usuarios -> {
+            UsuarioDto usuarioDto = new UsuarioDto();
+            usuarioDto.setId(usuarios.getId());
+            usuarioDto.setSenha(usuarios.getSenha());
+            usuarioDto.setLogin(usuarios.getLogin());
+            return usuarioDto;
+        }).collect(Collectors.toList());
+    }
+
+    public UsuarioDto findById(Long id){
+        Optional<UsuarioModel> usuarioSearch = usuarioRepository.findById(id);
+        if(usuarioSearch.isPresent()){
+            UsuarioModel usuarioModel = usuarioSearch.get();
+            UsuarioDto usuarioDto = new UsuarioDto();
+            usuarioDto.setLogin(usuarioModel.getLogin());
+            usuarioDto.setId(usuarioModel.getId());
+            usuarioDto.setSenha(usuarioModel.getSenha());
+            return usuarioDto;
+        }else{
+            return null;
+        }
+    }
+
+
 }
