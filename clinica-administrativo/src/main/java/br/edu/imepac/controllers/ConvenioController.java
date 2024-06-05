@@ -10,5 +10,5 @@ import java.util.List;
 public class ConvenioController {
 
     @Autowired
-    private ConvenioService convenioservice
+    private ConvenioService convenioservice;
 }

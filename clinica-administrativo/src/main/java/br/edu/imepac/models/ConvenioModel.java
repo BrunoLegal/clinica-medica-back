@@ -12,7 +12,7 @@ public class ConvenioModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String empresa;
-    private String CNPJ;
+    private String cnpj;
     private  String telefone;
 
 }
