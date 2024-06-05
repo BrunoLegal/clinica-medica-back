@@ -1,9 +1,9 @@
 package br.edu.imepac.controllers;
 
 
-import br.edu.imepac.dtos.MedicoCreateRequest;
-import br.edu.imepac.dtos.MedicoDto;
-import br.edu.imepac.services.MedicoService;
+import br.edu.imepac.dtos.EspecialidadeCreateRequest;
+import br.edu.imepac.dtos.EspecialidadeDto;
+import br.edu.imepac.services.EspecialidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +16,10 @@ import java.util.List;
 public class EspecialidadeController {
 
     @Autowired
-    private MedicoService medicoService;
+    private EspecialidadeService especialidadeService;
     @GetMapping
-    public ResponseEntity<List<MedicoDto>> listDoctor(){
-        List<MedicoDto> list = medicoService.buscaTodosMedicos();
+    public ResponseEntity<List<EspecialidadeDto>> listEspecialidade(){
+        List<EspecialidadeDto> list = especialidadeService.findAll();
         if(list.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
@@ -27,11 +27,39 @@ public class EspecialidadeController {
         }
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<EspecialidadeDto> findEspecialidade(@PathVariable Long id){
+        EspecialidadeDto especialidadeDto = especialidadeService.findById(id);
+        if(especialidadeDto != null){
+            return new ResponseEntity<>(especialidadeDto, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
     @PostMapping
-    @ResponseBody
-    public ResponseEntity<MedicoDto> saveDoctor(@RequestBody MedicoCreateRequest medicoCreateRequest){
-        MedicoDto medicoDto = medicoService.salvarMedico(medicoCreateRequest);
-        return new ResponseEntity<>(medicoDto, HttpStatus.CREATED);
+    public ResponseEntity<EspecialidadeDto> saveEspecialidade(@RequestBody EspecialidadeCreateRequest especialidadeCreateRequest){
+        EspecialidadeDto especialidadeDto = especialidadeService.save(especialidadeCreateRequest);
+        return new ResponseEntity<>(especialidadeDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<EspecialidadeDto> u(@RequestBody EspecialidadeDto especialidadeData, @PathVariable Long id){
+        EspecialidadeDto especialidadeDto = especialidadeService.update(id, especialidadeData);
+        if(especialidadeDto != null){
+            return new ResponseEntity<>(especialidadeDto, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteEspecialidade(@PathVariable Long id){
+        especialidadeService.delete(id);
     }
 
 }
