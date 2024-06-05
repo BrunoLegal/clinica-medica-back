@@ -19,4 +19,5 @@ public class EspecialidadeModel {
     private Long id;
     @NotNull
     private String desc_especialidade;
+
 }
