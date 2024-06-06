@@ -43,10 +43,12 @@ public class UsuarioService {
             usuarioModel.setSenha(usuarioData.getSenha());
             usuarioModel.setLogin(usuarioData.getLogin());
 
+            UsuarioModel updatedUsuario = usuarioRepository.save(usuarioModel);
+
             UsuarioDto usuarioDto = new UsuarioDto();
-            usuarioDto.setLogin(usuarioModel.getLogin());
-            usuarioDto.setId(usuarioDto.getId());
-            usuarioDto.setSenha(usuarioDto.getSenha());
+            usuarioDto.setLogin(updatedUsuario.getLogin());
+            usuarioDto.setId(updatedUsuario.getId());
+            usuarioDto.setSenha(updatedUsuario.getSenha());
             return usuarioDto;
         }else{
             return null;
