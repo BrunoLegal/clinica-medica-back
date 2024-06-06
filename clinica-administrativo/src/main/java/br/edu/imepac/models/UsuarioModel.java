@@ -5,19 +5,19 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
-
-@Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "especialidades")
-public class EspecialidadeModel {
+@NoArgsConstructor
+@Entity
+@Table(name = "usuarios")
+public class UsuarioModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
-    private String desc_especialidade;
-
+    private String login;
+    @NotNull
+    private String senha;
 }
