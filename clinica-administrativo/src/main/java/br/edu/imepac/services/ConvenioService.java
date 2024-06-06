@@ -60,7 +60,7 @@ public class ConvenioService {
 
     public ConvenioDto save(ConvenioCreateRequest convenioRequest){
         ConvenioModel convenioModel = modelMapper.map(convenioRequest, ConvenioModel.class);
-        ConvenioModel saveConvenio = convenioRepository.save(convenioModel);
+        ConvenioModel savedConvenio = convenioRepository.save(convenioModel);
         ConvenioDto convenioDto = modelMapper.map(savedConvenio, ConvenioDto.class);
         return convenioDto;
     }
