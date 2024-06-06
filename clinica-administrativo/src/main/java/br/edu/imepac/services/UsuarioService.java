@@ -6,6 +6,7 @@ import br.edu.imepac.dtos.UsuarioDto;
 import br.edu.imepac.models.MedicoModel;
 import br.edu.imepac.models.UsuarioModel;
 import br.edu.imepac.repositories.UsuarioRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
 public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     public void delete (Long id){
         usuarioRepository.deleteById(id);
@@ -24,15 +27,12 @@ public class UsuarioService {
 
     public UsuarioDto save(UsuarioCreateRequest usuarioCreateRequest){
         UsuarioModel usuarioModel = new UsuarioModel();
-        usuarioModel.setLogin(usuarioCreateRequest.getLogin());
-        usuarioModel.setSenha(usuarioCreateRequest.getSenha());
+        usuarioModel = modelMapper.map(usuarioCreateRequest, UsuarioModel.class);
 
         UsuarioModel savedUsuario = usuarioRepository.save(usuarioModel);
 
         UsuarioDto usuarioDto = new UsuarioDto();
-        usuarioDto.setId(savedUsuario.getId());
-        usuarioDto.setSenha(savedUsuario.getSenha());
-        usuarioDto.setLogin(savedUsuario.getLogin());
+        usuarioDto = modelMapper.map(savedUsuario,UsuarioDto.class);
         return usuarioDto;
     }
 
@@ -40,15 +40,22 @@ public class UsuarioService {
         Optional<UsuarioModel> usuarioSearch = usuarioRepository.findById(id);
         if(usuarioSearch.isPresent()){
             UsuarioModel usuarioModel = usuarioSearch.get();
-            usuarioModel.setSenha(usuarioData.getSenha());
             usuarioModel.setLogin(usuarioData.getLogin());
-
+            usuarioModel.setSenha(usuarioData.getSenha());
+            usuarioModel.setCadastroPaciente(usuarioData.getCadastroPaciente());
+            usuarioModel.setCadastroFuncionario(usuarioData.getCadastroFuncionario());
+            usuarioModel.setCadastroUsuario(usuarioData.getCadastroUsuario());
+            usuarioModel.setCadastroEspecialidade(usuarioData.getCadastroEspecialidade());
+            usuarioModel.setCadastroConvenio(usuarioData.getCadastroConvenio());
+            usuarioModel.setCadastroMedico(usuarioData.getCadastroMedico());
+            usuarioModel.setAgendamentoConsulta(usuarioData.getAgendamentoConsulta());
+            usuarioModel.setCancelamentoConsulta(usuarioData.getCancelamentoConsulta());
+            usuarioModel.setModuloAdmnistrativo(usuarioData.getModuloAdmnistrativo());
+            usuarioModel.setModuloAgendamento(usuarioData.getModuloAgendamento());
+            usuarioModel.setModuloAtendimento(usuarioData.getModuloAtendimento());
             UsuarioModel updatedUsuario = usuarioRepository.save(usuarioModel);
-
             UsuarioDto usuarioDto = new UsuarioDto();
-            usuarioDto.setLogin(updatedUsuario.getLogin());
-            usuarioDto.setId(updatedUsuario.getId());
-            usuarioDto.setSenha(updatedUsuario.getSenha());
+            usuarioDto = modelMapper.map(updatedUsuario, UsuarioDto.class);
             return usuarioDto;
         }else{
             return null;
@@ -59,9 +66,7 @@ public class UsuarioService {
         List<UsuarioModel> usuarioModels = usuarioRepository.findAll();
         return usuarioModels.stream().map(usuarios -> {
             UsuarioDto usuarioDto = new UsuarioDto();
-            usuarioDto.setId(usuarios.getId());
-            usuarioDto.setSenha(usuarios.getSenha());
-            usuarioDto.setLogin(usuarios.getLogin());
+            usuarioDto = modelMapper.map(usuarios, UsuarioDto.class);
             return usuarioDto;
         }).collect(Collectors.toList());
     }
@@ -71,9 +76,7 @@ public class UsuarioService {
         if(usuarioSearch.isPresent()){
             UsuarioModel usuarioModel = usuarioSearch.get();
             UsuarioDto usuarioDto = new UsuarioDto();
-            usuarioDto.setLogin(usuarioModel.getLogin());
-            usuarioDto.setId(usuarioModel.getId());
-            usuarioDto.setSenha(usuarioModel.getSenha());
+            usuarioDto = modelMapper.map(usuarioModel, UsuarioDto.class);
             return usuarioDto;
         }else{
             return null;

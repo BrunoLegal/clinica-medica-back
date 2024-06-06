@@ -11,4 +11,15 @@ public class UsuarioDto {
     private Long id;
     private String login;
     private String senha;
+    private Boolean cadastroPaciente;
+    private Boolean cadastroFuncionario;
+    private Boolean cadastroUsuario;
+    private Boolean cadastroEspecialidade;
+    private Boolean cadastroConvenio;
+    private Boolean cadastroMedico;
+    private Boolean agendamentoConsulta;
+    private Boolean cancelamentoConsulta;
+    private Boolean moduloAdmnistrativo;
+    private Boolean moduloAgendamento;
+    private Boolean moduloAtendimento;
 }
