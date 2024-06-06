@@ -8,11 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 
 @RestController
-@RequestMapping("usuarios")
+@RequestMapping("usuario")
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
@@ -44,6 +43,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UsuarioDto> updateUser(@RequestBody UsuarioDto usuarioData, @PathVariable Long id){
         UsuarioDto usuarioDto = usuarioService.update(usuarioData, id);
         if(usuarioDto != null){
