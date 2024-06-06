@@ -4,6 +4,29 @@
   <groupId>br.edu.imepac</groupId>
   <artifactId>clinica-medica-back</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <properties>
+    <!-- Define a versão do Java que você deseja usar -->
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+  </properties>
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.11.0</version>
+          <configuration>
+            <source>${maven.compiler.source}</source>
+            <target>${maven.compiler.target}</target>
+            <compilerArgs>
+              <arg>-parameters</arg>
+            </compilerArgs>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
   <packaging>pom</packaging>
   <name>Archetype - clinica-medica-back</name>
   <url>http://maven.apache.org</url>
