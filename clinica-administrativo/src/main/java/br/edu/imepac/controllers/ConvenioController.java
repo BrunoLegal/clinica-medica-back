@@ -1,6 +1,6 @@
 package br.edu.imepac.controllers;
 import br.edu.imepac.dtos.ConvenioCreateRequest;
-import br.edu.imepac.dtos.ConvenioDto;git 
+import br.edu.imepac.dtos.ConvenioDto;
 import br.edu.imepac.services.ConvenioService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
