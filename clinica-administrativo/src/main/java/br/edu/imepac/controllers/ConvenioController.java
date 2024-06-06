@@ -15,13 +15,11 @@ import java.util.List;
 @RequestMapping("convenio")
 public class ConvenioController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConvenioController.class);
     @Autowired
     private ConvenioService convenioService;
 
     @PostMapping
     public ResponseEntity<ConvenioDto> saveConvenio(@RequestBody ConvenioCreateRequest convenioCreateRequest){
-        logger.info("Request ConvenioCreateRequest");
         ConvenioDto saveConvenio = convenioService.save(convenioCreateRequest);
         return new ResponseEntity<>(saveConvenio, HttpStatus.CREATED);
     }
@@ -32,12 +30,23 @@ public class ConvenioController {
         return new ResponseEntity<>(convenios, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ConvenioDto> updateConvenio(@PathVariable Long id, @RequestBody ConvenioDto convenioDetails){
         ConvenioDto updateConvenio = convenioService.update(id, convenioDetails);
         if(updateConvenio != null){
             return new ResponseEntity<>(updateConvenio, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ConvenioDto> getConvenioById(@PathVariable Long id){
+        ConvenioDto convenioDto = convenioService.findById(id);
+        if(convenioDto != null){
+            return new ResponseEntity<>(convenioDto, HttpStatus.OK);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -6,5 +6,5 @@ import lombok.Data;
 public class ConvenioCreateRequest {
     private String empresa;
     private String cnpj;
-    private  String telefone;
+    private String telefone;
 }

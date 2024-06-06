@@ -58,10 +58,22 @@ public class ConvenioService {
         }
     }
 
-    public ConvenioDto save(ConvenioCreateRequest convenioRequest){
-        ConvenioModel convenioModel = modelMapper.map(convenioRequest, ConvenioModel.class);
+    public ConvenioDto save(ConvenioCreateRequest convenioCreateRequest){
+        //ConvenioModel convenioModel = modelMapper.map(convenioCreateRequest, ConvenioModel.class);
+        ConvenioModel convenioModel = new ConvenioModel();
+        convenioModel.setEmpresa(convenioCreateRequest.getEmpresa());
+        convenioModel.setCnpj(convenioCreateRequest.getCnpj());
+        convenioModel.setTelefone(convenioCreateRequest.getTelefone());
+
         ConvenioModel savedConvenio = convenioRepository.save(convenioModel);
-        ConvenioDto convenioDto = modelMapper.map(savedConvenio, ConvenioDto.class);
+
+        ConvenioDto convenioDto = new ConvenioDto();
+        convenioDto.setId(savedConvenio.getId());
+        convenioDto.setEmpresa(savedConvenio.getEmpresa());
+        convenioDto.setCnpj(savedConvenio.getCnpj());
+        convenioDto.setTelefone(savedConvenio.getTelefone());
+
+        //ConvenioDto convenioDto = modelMapper.map(savedConvenio, ConvenioDto.class);
         return convenioDto;
     }
 

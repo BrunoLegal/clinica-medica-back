@@ -7,5 +7,5 @@ public class ConvenioDto {
     private Long id;
     private String empresa;
     private String cnpj;
-    private  String telefone;
+    private String telefone;
 }

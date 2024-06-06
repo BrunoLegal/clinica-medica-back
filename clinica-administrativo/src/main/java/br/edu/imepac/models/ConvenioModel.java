@@ -13,6 +13,6 @@ public class ConvenioModel {
     private Long id;
     private String empresa;
     private String cnpj;
-    private  String telefone;
+    private String telefone;
 
 }
