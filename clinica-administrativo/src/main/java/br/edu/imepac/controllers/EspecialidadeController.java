@@ -47,7 +47,7 @@ public class EspecialidadeController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<EspecialidadeDto> u(@RequestBody EspecialidadeDto especialidadeData, @PathVariable Long id){
+    public ResponseEntity<EspecialidadeDto> updateEspecialidade(@RequestBody EspecialidadeDto especialidadeData, @PathVariable Long id){
         EspecialidadeDto especialidadeDto = especialidadeService.update(id, especialidadeData);
         if(especialidadeDto != null){
             return new ResponseEntity<>(especialidadeDto, HttpStatus.OK);
