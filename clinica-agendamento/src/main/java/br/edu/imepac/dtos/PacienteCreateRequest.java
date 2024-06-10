@@ -1,0 +1,28 @@
+package br.edu.imepac.dtos;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class PacienteCreateRequest {
+    private String nome;
+    private String numero_RG;
+    private String orgao_Emissor;
+    private String numero_CPF;
+    private String endereco;
+    private String numero;
+    private String complemento;
+    private String bairro;
+    private String cidade;
+    private String estado;
+    private String telefone;
+    private String celular;
+    private String data_de_nascimento;
+    private String sexo;
+    private String tem_convenio;
+    private ConvenioModel convenio;
+    private String senha_acesso;
+}
