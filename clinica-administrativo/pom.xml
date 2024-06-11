@@ -26,6 +26,10 @@
     </build>
     <dependencies>
         <dependency>
+            <groupId>br.edu.imepac</groupId>
+            <artifactId>clinica-commons</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
         </dependency>
