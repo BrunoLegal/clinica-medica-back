@@ -14,5 +14,46 @@ import java.util.List;
 @RequestMapping("funcionario")
 public class FuncionarioController {
 
+    @Autowired
+    private FuncionarioService funcionarioService;
+    @GetMapping
+    public ResponseEntity<List<FuncionarioDto>> listAllFuncionarios(){
+        List<FuncionarioDto> list = funcionarioService.findAll();
+        if(list.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<>(list, HttpStatus.OK);
+        }
+    }
 
-}
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<FuncionarioDto> findFuncionario(@PathVariable Long id){
+        FuncionarioDto funcionarioDto = funcionarioService.findById(id);
+        if(funcionarioDto != null){
+            return new ResponseEntity<>(funcionarioDto, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    @PostMapping
+    public ResponseEntity<FuncionarioDto> saveFuncionario(@RequestBody FuncionarioCreateRequest funcionarioCreateRequest){
+        FuncionarioDto funcionarioDto = funcionarioService.save(funcionarioCreateRequest);
+        return new ResponseEntity<>(funcionarioDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<FuncionarioDto> updateFuncionario(@RequestBody FuncionarioDto funcionarioData, @PathVariable Long id){
+        FuncionarioDto funcionarioDto = funcionarioService.update(funcionarioData, id);
+        if(funcionarioDto != null){
+            return new ResponseEntity<>(funcionarioDto, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    }
+

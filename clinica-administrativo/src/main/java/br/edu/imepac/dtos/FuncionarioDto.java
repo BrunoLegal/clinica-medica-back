@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FuncionarioDto {
-
+    private Long id;
     private String nome_Funcionario;
     private String numero_Rg;
     private String orgao_Emissor;

@@ -6,11 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "funcionario")
+@Entity
+@Table(name = "funcionarios")
 public class FuncionarioModel {
 
     @Id

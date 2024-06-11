@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FuncionarioCreateRequest {
-
     private String nome_Funcionario;
     private String numero_Rg;
     private String orgao_Emissor;
