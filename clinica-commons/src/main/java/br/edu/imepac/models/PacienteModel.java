@@ -1,6 +1,5 @@
 package br.edu.imepac.models;
 
-import br.edu.imepac.models.ConvenioModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

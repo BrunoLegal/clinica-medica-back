@@ -15,5 +15,4 @@ public class ClinicaAdministrativo {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
-
 }
