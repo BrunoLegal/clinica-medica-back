@@ -79,6 +79,21 @@
         <artifactId>clinica-commons</artifactId>
         <version>1.0-SNAPSHOT</version>
       </dependency>
+      <!-- JUnit 5 dependency -->
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>5.8.1</version>
+        <scope>test</scope>
+      </dependency>
+
+      <!-- Mockito dependency -->
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>3.12.4</version>
+        <scope>test</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 </project>
