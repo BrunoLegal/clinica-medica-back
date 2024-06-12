@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
-import java.time.LocalTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +17,7 @@ public class AgendaConsultaDto {
     private PacienteModel paciente;
     private MedicoModel medico;
     private Date data;
-    private LocalTime hora;
+    private String hora;
     private Boolean retorno = false;
     private Boolean cancelado = false;
     private String motivoCancelamento;

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
-import java.time.LocalTime;
 
 @Entity
 @Table(name = "agenda_consulta")
@@ -33,7 +32,7 @@ public class AgendaConsulta {
     @NotNull
     private Date data;
     @NotNull
-    private LocalTime hora;
+    private String Hora;
     @NotNull
     private Boolean retorno;
     @NotNull
