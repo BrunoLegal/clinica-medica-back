@@ -55,5 +55,10 @@ public class FuncionarioController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteFuncionario(@PathVariable Long id){
+        funcionarioService.delete(id);
+    }
     }
 
