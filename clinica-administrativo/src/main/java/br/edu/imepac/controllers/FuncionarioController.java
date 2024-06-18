@@ -17,7 +17,7 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioService funcionarioService;
     @GetMapping
-    public ResponseEntity<List<FuncionarioDto>> listFuncionarios(){
+    public ResponseEntity<List<FuncionarioDto>> listAllFuncionarios(){
         List<FuncionarioDto> list = funcionarioService.findAll();
         if(list.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
