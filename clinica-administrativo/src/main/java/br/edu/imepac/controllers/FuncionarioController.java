@@ -47,7 +47,7 @@ public class FuncionarioController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<FuncionarioDto> updateFuncionario(@RequestBody FuncionarioDto funcionarioData, @PathVariable Long id){
-        FuncionarioDto funcionarioDto = funcionarioService.update(funcionarioData, id);
+        FuncionarioDto funcionarioDto = funcionarioService.update(id, funcionarioData);
         if(funcionarioDto != null){
             return new ResponseEntity<>(funcionarioDto, HttpStatus.OK);
         }else{
