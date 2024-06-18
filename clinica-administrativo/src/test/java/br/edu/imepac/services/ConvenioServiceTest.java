@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.internal.matchers.Any;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
@@ -24,6 +23,10 @@ class ConvenioServiceTest {
 
     /*
      Guia rápido e resumido de como fazer um teste unitário
+
+     Recomendo assistir esses vídeos:
+     https://www.youtube.com/watch?v=vZm0lHciFsQ
+     https://www.youtube.com/watch?v=R3ItceaMwnw
 
      Primeiro, é preciso criar uma instância da classe que será testada e usar a anotação @InjectMocks
      nela, para o mockito saber pra quem ele vai simular.
