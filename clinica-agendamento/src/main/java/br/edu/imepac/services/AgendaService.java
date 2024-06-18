@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+//TODO: Testar todos os metodos, foco no update
+
 @Service
 public class AgendaService {
     @Autowired
@@ -33,7 +35,7 @@ public class AgendaService {
     }
 
     public Boolean isAvailable(Date date, String hora){
-        Optional<AgendaConsulta> optional = agendaRepository.findByDataAndHora(date, hora);
+        Optional<List<AgendaConsulta>> optional = agendaRepository.findByDataAndHoraAndCanceladoFalse(date, hora);
         return optional.isEmpty();
     }
 
@@ -57,13 +59,51 @@ public class AgendaService {
 
     public AgendaConsultaDto update(Long id, AgendaConsultaDto agendaData){
         Optional<AgendaConsulta> optional = agendaRepository.findById(id);
-        if(optional.isEmpty()){
+        if(optional.isEmpty() || !isAvailable(agendaData.getData(), agendaData.getHora())){
             return null;
         }else{
             AgendaConsulta agendaConsulta = optional.get();
-            AgendaConsultaDto agendaConsultaDto = mapper.map(agendaConsulta, AgendaConsultaDto.class);
-            agendaConsultaDto = mapper.map(agendaData, AgendaConsultaDto.class);
+            AgendaConsultaDto agendaConsultaDto = new AgendaConsultaDto();
+            agendaConsultaDto.setId(agendaConsulta.getId());
+            agendaConsultaDto.setUsuario(agendaConsulta.getUsuario());
+            agendaConsultaDto.setMedico(agendaConsulta.getMedico());
+            agendaConsultaDto.setRetorno(agendaConsulta.getRetorno());
+            agendaConsultaDto.setData(agendaConsulta.getData());
+            agendaConsultaDto.setHora(agendaConsulta.getHora());
+            agendaConsultaDto.setCancelado(agendaConsulta.getCancelado());
+            agendaConsultaDto.setPaciente(agendaConsulta.getPaciente());
+            agendaConsultaDto.setMotivoCancelamento(agendaConsulta.getMotivoCancelamento());
+            return agendaConsultaDto;
+        }
+    }
+
+    public AgendaConsultaDto setReturn(AgendaConsultaCreateRequest agendaConsultaCreateRequest){
+        if(isAvailable(agendaConsultaCreateRequest.getData(), agendaConsultaCreateRequest.getHora())){
+            AgendaConsulta agendaConsulta = mapper.map(agendaConsultaCreateRequest, AgendaConsulta.class);
+            agendaConsulta.setRetorno(true);
+            AgendaConsulta savedConsulta = agendaRepository.save(agendaConsulta);
+
+            AgendaConsultaDto agendaConsultaDto = mapper.map(savedConsulta, AgendaConsultaDto.class);
+            return agendaConsultaDto;
+        }else{
             return null;
         }
+    }
+
+    public AgendaConsultaDto cancelConsulta(Long id, String motivo){
+        Optional<AgendaConsulta> optional = agendaRepository.findById(id);
+        if(optional.isEmpty() || !isAvailable(optional.get().getData(), optional.get().getHora())){
+            return null;
+        }else{
+            AgendaConsulta agendaConsulta = optional.get();
+            agendaConsulta.setCancelado(true);
+            agendaConsulta.setMotivoCancelamento(motivo);
+            AgendaConsultaDto savedAgenda = mapper.map(agendaConsulta, AgendaConsultaDto.class);
+            AgendaConsultaDto agendaConsultaDto = update(agendaConsulta.getId(), savedAgenda);
+            return agendaConsultaDto;
+        }
+    }
+    public void deleteConsulta(Long id){
+        agendaRepository.deleteById(id);
     }
 }
