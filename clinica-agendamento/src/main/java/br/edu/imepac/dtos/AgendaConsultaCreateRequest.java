@@ -18,6 +18,6 @@ public class AgendaConsultaCreateRequest {
     private MedicoModel medico;
     private Date data;
     private String hora;
-    private Boolean retorno = false;
-    private Boolean cancelado = false;
+    private Boolean retorno;
+    private Boolean cancelado;
 }
