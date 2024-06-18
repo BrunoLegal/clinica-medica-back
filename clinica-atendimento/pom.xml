@@ -9,6 +9,11 @@
     <artifactId>clinica-atendimento</artifactId>
     <name>Archetype - clinica-atendimento</name>
     <url>http://maven.apache.org</url>
+    <properties>
+        <!-- Define a versão do Java que você deseja usar -->
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+    </properties>
     <build>
         <plugins>
             <plugin>

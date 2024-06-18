@@ -32,7 +32,7 @@ public class AgendaConsulta {
     @NotNull
     private Date data;
     @NotNull
-    private String Hora;
+    private String hora;
     @NotNull
     private Boolean retorno;
     @NotNull

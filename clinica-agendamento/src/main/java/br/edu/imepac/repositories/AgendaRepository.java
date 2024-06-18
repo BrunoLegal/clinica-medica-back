@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface AgendaRepository extends JpaRepository<AgendaConsulta, Long> {
-    Optional<List<AgendaConsulta>> findByDataAndHoraAndCanceladoFalse(Date data, String Hora);
+    Optional<List<AgendaConsulta>> findByDataAndHoraAndCanceladoFalse(Date data, String hora);
 }
