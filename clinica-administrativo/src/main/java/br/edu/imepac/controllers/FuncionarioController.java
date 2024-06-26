@@ -17,7 +17,7 @@ public class FuncionarioController {
     @Autowired
     private FuncionarioService funcionarioService;
     @GetMapping
-    public ResponseEntity<List<FuncionarioDto>> listAllFuncionarios(){
+    public ResponseEntity<List<FuncionarioDto>> listFuncionarios(){
         List<FuncionarioDto> list = funcionarioService.findAll();
         if(list.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -47,7 +47,7 @@ public class FuncionarioController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<FuncionarioDto> updateFuncionario(@RequestBody FuncionarioDto funcionarioData, @PathVariable Long id){
-        FuncionarioDto funcionarioDto = funcionarioService.update(funcionarioData, id);
+        FuncionarioDto funcionarioDto = funcionarioService.update(id, funcionarioData);
         if(funcionarioDto != null){
             return new ResponseEntity<>(funcionarioDto, HttpStatus.OK);
         }else{
@@ -55,5 +55,10 @@ public class FuncionarioController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteFuncionario(@PathVariable Long id){
+        funcionarioService.delete(id);
+    }
     }
 

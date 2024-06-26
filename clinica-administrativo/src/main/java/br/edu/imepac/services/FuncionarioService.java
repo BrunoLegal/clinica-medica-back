@@ -23,6 +23,7 @@ public class FuncionarioService {
 
     public FuncionarioDto save(FuncionarioCreateRequest funcionarioCreateRequest){
         FuncionarioModel funcionarioModel = new FuncionarioModel();
+        funcionarioModel.setNome_Funcionario(funcionarioCreateRequest.getNome_Funcionario());
         funcionarioModel.setNumero_Rg(funcionarioCreateRequest.getNumero_Rg());
         funcionarioModel.setOrgao_Emissor(funcionarioCreateRequest.getOrgao_Emissor());
         funcionarioModel.setNumero_Cpf(funcionarioCreateRequest.getNumero_Cpf());
@@ -42,6 +43,7 @@ public class FuncionarioService {
 
         FuncionarioDto funcionarioDto = new FuncionarioDto();
         funcionarioDto.setId(savedFuncionario.getId());
+        funcionarioDto.setNome_Funcionario(savedFuncionario.getNome_Funcionario());
         funcionarioDto.setNumero_Rg(savedFuncionario.getNumero_Rg());
         funcionarioDto.setOrgao_Emissor(savedFuncionario.getOrgao_Emissor());
         funcionarioDto.setNumero_Cpf(savedFuncionario.getNumero_Cpf());
@@ -52,17 +54,19 @@ public class FuncionarioService {
         funcionarioDto.setCidade(savedFuncionario.getCidade());
         funcionarioDto.setEstado(savedFuncionario.getEstado());
         funcionarioDto.setTelefone(savedFuncionario.getTelefone());
+        funcionarioDto.setCelular(savedFuncionario.getCelular());
         funcionarioDto.setNumero_Ctps(savedFuncionario.getNumero_Ctps());
+        funcionarioDto.setNumero_Pis(savedFuncionario.getNumero_Pis());
         funcionarioDto.setData(savedFuncionario.getData());
 
         return funcionarioDto;
     }
 
-    public FuncionarioDto update(FuncionarioDto funcionarioData, Long id){
-        Optional<FuncionarioModel> funcionarioSearch = funcionarioRepository.findById(id);
-        if(funcionarioSearch.isPresent()){
+    public FuncionarioDto update (Long id, FuncionarioDto funcionarioData){
+        Optional<FuncionarioModel> optionalFuncionarioDto = funcionarioRepository.findById(id);
+        if(optionalFuncionarioDto.isPresent()){
 
-            FuncionarioModel funcionarioModel = funcionarioSearch.get();
+            FuncionarioModel funcionarioModel = optionalFuncionarioDto.get();
             funcionarioModel.setNome_Funcionario(funcionarioData.getNome_Funcionario());
             funcionarioModel.setNumero_Rg(funcionarioData.getNumero_Rg());
             funcionarioModel.setOrgao_Emissor(funcionarioData.getOrgao_Emissor());
@@ -79,24 +83,24 @@ public class FuncionarioService {
             funcionarioModel.setNumero_Pis(funcionarioData.getNumero_Pis());
             funcionarioModel.setData(funcionarioData.getData());
 
-            FuncionarioModel updatedFuncionario = funcionarioRepository.save(funcionarioModel);
+            FuncionarioModel updatedModel = funcionarioRepository.save(funcionarioModel);
 
             FuncionarioDto funcionarioDto = new FuncionarioDto();
-            funcionarioDto.setNome_Funcionario(updatedFuncionario.getNome_Funcionario());
-            funcionarioDto.setNumero_Rg(updatedFuncionario.getNumero_Rg());
-            funcionarioDto.setOrgao_Emissor(updatedFuncionario.getOrgao_Emissor());
-            funcionarioDto.setNumero_Cpf(updatedFuncionario.getNumero_Cpf());
-            funcionarioDto.setEndereco(updatedFuncionario.getEndereco());
-            funcionarioDto.setNumero(updatedFuncionario.getNumero());
-            funcionarioDto.setComplemento(updatedFuncionario.getComplemento());
-            funcionarioDto.setBairro(updatedFuncionario.getBairro());
-            funcionarioDto.setCidade(updatedFuncionario.getCidade());
-            funcionarioDto.setEstado(updatedFuncionario.getEstado());
-            funcionarioDto.setTelefone(updatedFuncionario.getTelefone());
-            funcionarioDto.setCelular(updatedFuncionario.getCelular());
-            funcionarioDto.setNumero_Ctps(updatedFuncionario.getNumero_Ctps());
-            funcionarioDto.setNumero_Pis(updatedFuncionario.getNumero_Pis());
-            funcionarioDto.setData(updatedFuncionario.getData());
+            funcionarioDto.setNome_Funcionario(updatedModel.getNome_Funcionario());
+            funcionarioDto.setNumero_Rg(updatedModel.getNumero_Rg());
+            funcionarioDto.setOrgao_Emissor(updatedModel.getOrgao_Emissor());
+            funcionarioDto.setNumero_Cpf(updatedModel.getNumero_Cpf());
+            funcionarioDto.setEndereco(updatedModel.getEndereco());
+            funcionarioDto.setNumero(updatedModel.getNumero());
+            funcionarioDto.setComplemento(updatedModel.getComplemento());
+            funcionarioDto.setBairro(updatedModel.getBairro());
+            funcionarioDto.setCidade(updatedModel.getCidade());
+            funcionarioDto.setEstado(updatedModel.getEstado());
+            funcionarioDto.setTelefone(updatedModel.getTelefone());
+            funcionarioDto.setCelular(updatedModel.getCelular());
+            funcionarioDto.setNumero_Ctps(updatedModel.getNumero_Ctps());
+            funcionarioDto.setNumero_Pis(updatedModel.getNumero_Pis());
+            funcionarioDto.setData(updatedModel.getData());
             return funcionarioDto;
 
     }else {
@@ -135,6 +139,7 @@ public class FuncionarioService {
             FuncionarioModel funcionarioModel = funcionarioSearch.get();
             FuncionarioDto funcionarioDto = new FuncionarioDto();
             funcionarioDto.setId(funcionarioModel.getId());
+            funcionarioDto.setNome_Funcionario(funcionarioModel.getNome_Funcionario());
             funcionarioDto.setNumero_Rg(funcionarioModel.getNumero_Rg());
             funcionarioDto.setOrgao_Emissor(funcionarioModel.getOrgao_Emissor());
             funcionarioDto.setNumero_Cpf(funcionarioModel.getNumero_Cpf());
@@ -145,7 +150,9 @@ public class FuncionarioService {
             funcionarioDto.setCidade(funcionarioModel.getCidade());
             funcionarioDto.setEstado(funcionarioModel.getEstado());
             funcionarioDto.setTelefone(funcionarioModel.getTelefone());
+            funcionarioDto.setCelular(funcionarioModel.getCelular());
             funcionarioDto.setNumero_Ctps(funcionarioModel.getNumero_Ctps());
+            funcionarioDto.setNumero_Pis(funcionarioModel.getNumero_Pis());
             funcionarioDto.setData(funcionarioModel.getData());
 
             return funcionarioDto;
