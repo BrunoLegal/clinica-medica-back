@@ -5,8 +5,6 @@ import br.edu.imepac.services.ConvenioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -89,7 +87,7 @@ public class ConvenioController {
 
     @Operation(description = "", tags = "Convênio")
     @ApiResponses(value = {
-            @ApiResponse( responseCode = "200", description = "convênio salvo com sucesso"),
+            @ApiResponse( responseCode = "200", description = "convênio deletado com sucesso"),
             @ApiResponse( responseCode = "400", description = "erro do cliente"),
             @ApiResponse( responseCode = "500", description = "erro do servidor")
     })
