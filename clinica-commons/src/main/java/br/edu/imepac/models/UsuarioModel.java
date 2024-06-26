@@ -46,7 +46,7 @@ public class UsuarioModel {
     private Boolean cancelamentoConsulta = false;
     @NotNull
     @Column(name = "modulo_administrativo")
-    private Boolean moduloAdmnistrativo = false;
+    private Boolean moduloAdministrativo = false;
     @NotNull
     @Column(name = "modulo_agendamento")
     private Boolean moduloAgendamento = false;

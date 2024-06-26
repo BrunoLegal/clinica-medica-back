@@ -20,7 +20,7 @@ public class UsuarioCreateRequest {
     private Boolean cadastroMedico = false;
     private Boolean agendamentoConsulta = false;
     private Boolean cancelamentoConsulta = false;
-    private Boolean moduloAdmnistrativo = false;
+    private Boolean moduloAdministrativo = false;
     private Boolean moduloAgendamento = false;
     private Boolean moduloAtendimento = false;
 }
