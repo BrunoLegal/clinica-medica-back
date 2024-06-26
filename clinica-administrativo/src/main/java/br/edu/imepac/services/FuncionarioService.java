@@ -23,6 +23,7 @@ public class FuncionarioService {
 
     public FuncionarioDto save(FuncionarioCreateRequest funcionarioCreateRequest){
         FuncionarioModel funcionarioModel = new FuncionarioModel();
+        funcionarioModel.setNome_Funcionario(funcionarioCreateRequest.getNome_Funcionario());
         funcionarioModel.setNumero_Rg(funcionarioCreateRequest.getNumero_Rg());
         funcionarioModel.setOrgao_Emissor(funcionarioCreateRequest.getOrgao_Emissor());
         funcionarioModel.setNumero_Cpf(funcionarioCreateRequest.getNumero_Cpf());
@@ -42,6 +43,7 @@ public class FuncionarioService {
 
         FuncionarioDto funcionarioDto = new FuncionarioDto();
         funcionarioDto.setId(savedFuncionario.getId());
+        funcionarioDto.setNome_Funcionario(savedFuncionario.getNome_Funcionario());
         funcionarioDto.setNumero_Rg(savedFuncionario.getNumero_Rg());
         funcionarioDto.setOrgao_Emissor(savedFuncionario.getOrgao_Emissor());
         funcionarioDto.setNumero_Cpf(savedFuncionario.getNumero_Cpf());
@@ -52,7 +54,9 @@ public class FuncionarioService {
         funcionarioDto.setCidade(savedFuncionario.getCidade());
         funcionarioDto.setEstado(savedFuncionario.getEstado());
         funcionarioDto.setTelefone(savedFuncionario.getTelefone());
+        funcionarioDto.setCelular(savedFuncionario.getCelular());
         funcionarioDto.setNumero_Ctps(savedFuncionario.getNumero_Ctps());
+        funcionarioDto.setNumero_Pis(savedFuncionario.getNumero_Pis());
         funcionarioDto.setData(savedFuncionario.getData());
 
         return funcionarioDto;
@@ -135,6 +139,7 @@ public class FuncionarioService {
             FuncionarioModel funcionarioModel = funcionarioSearch.get();
             FuncionarioDto funcionarioDto = new FuncionarioDto();
             funcionarioDto.setId(funcionarioModel.getId());
+            funcionarioDto.setNome_Funcionario(funcionarioModel.getNome_Funcionario());
             funcionarioDto.setNumero_Rg(funcionarioModel.getNumero_Rg());
             funcionarioDto.setOrgao_Emissor(funcionarioModel.getOrgao_Emissor());
             funcionarioDto.setNumero_Cpf(funcionarioModel.getNumero_Cpf());
@@ -145,7 +150,9 @@ public class FuncionarioService {
             funcionarioDto.setCidade(funcionarioModel.getCidade());
             funcionarioDto.setEstado(funcionarioModel.getEstado());
             funcionarioDto.setTelefone(funcionarioModel.getTelefone());
+            funcionarioDto.setCelular(funcionarioModel.getCelular());
             funcionarioDto.setNumero_Ctps(funcionarioModel.getNumero_Ctps());
+            funcionarioDto.setNumero_Pis(funcionarioModel.getNumero_Pis());
             funcionarioDto.setData(funcionarioModel.getData());
 
             return funcionarioDto;
