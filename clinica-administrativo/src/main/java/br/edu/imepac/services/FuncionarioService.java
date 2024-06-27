@@ -54,6 +54,7 @@ public class FuncionarioService {
         if(optionalFuncionarioDto.isPresent()){
 
             FuncionarioModel funcionarioModel = optionalFuncionarioDto.get();
+
             funcionarioModel.setNome_Funcionario(funcionarioData.getNome_Funcionario());
             funcionarioModel.setNumero_Rg(funcionarioData.getNumero_Rg());
             funcionarioModel.setOrgao_Emissor(funcionarioData.getOrgao_Emissor());
@@ -73,6 +74,7 @@ public class FuncionarioService {
             FuncionarioModel updatedModel = funcionarioRepository.save(funcionarioModel);
 
             FuncionarioDto funcionarioDto = new FuncionarioDto();
+            funcionarioDto.setId(updatedModel.getId());
             funcionarioDto.setNome_Funcionario(updatedModel.getNome_Funcionario());
             funcionarioDto.setNumero_Rg(updatedModel.getNumero_Rg());
             funcionarioDto.setOrgao_Emissor(updatedModel.getOrgao_Emissor());
