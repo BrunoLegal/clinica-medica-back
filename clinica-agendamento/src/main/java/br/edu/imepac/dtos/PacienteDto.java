@@ -30,5 +30,4 @@ public class PacienteDto {
     private String tem_convenio;
     private ConvenioModel convenio;
     private String senha_acesso;
-
 }
