@@ -34,7 +34,6 @@
     <module>clinica-administrativo</module>
     <module>clinica-atendimento</module>
     <module>clinica-agendamento</module>
-      <module>clinica-commons</module>
     <module>clinica-commons</module>
   </modules>
   <dependencyManagement>
