@@ -21,7 +21,7 @@ public class AgendaService {
     private AgendaRepository agendaRepository;
     @Autowired
     private ModelMapper mapper;
-    public AgendaConsultaDto createConsulta(AgendaConsultaCreateRequest agendaConsultaCreateRequest){
+    public AgendaConsultaDto createConsulta(AgendaConsultaCreateRequest agendaConsultaCreateRequest) throws Exception{
         if(isAvailable(agendaConsultaCreateRequest.getData(), agendaConsultaCreateRequest.getHora())) {
             AgendaConsulta agendaConsulta = mapper.map(agendaConsultaCreateRequest, AgendaConsulta.class);
 
@@ -30,7 +30,7 @@ public class AgendaService {
 
             return agendaConsultaDto;
         }else{
-            return null;
+            throw new Exception("Essa data ou hora está indisponível");
         }
     }
 
@@ -57,27 +57,34 @@ public class AgendaService {
         }
     }
 
-    public AgendaConsultaDto update(Long id, AgendaConsultaDto agendaData){
+    public AgendaConsultaDto update(Long id, AgendaConsultaDto agendaData) throws Exception{
         Optional<AgendaConsulta> optional = agendaRepository.findById(id);
-        if(optional.isEmpty() || !isAvailable(agendaData.getData(), agendaData.getHora())){
+        if(optional.isEmpty()){
             return null;
         }else{
-            AgendaConsulta agendaConsulta = optional.get();
-            AgendaConsultaDto agendaConsultaDto = new AgendaConsultaDto();
-            agendaConsultaDto.setId(agendaConsulta.getId());
-            agendaConsultaDto.setUsuario(agendaConsulta.getUsuario());
-            agendaConsultaDto.setMedico(agendaConsulta.getMedico());
-            agendaConsultaDto.setRetorno(agendaConsulta.getRetorno());
-            agendaConsultaDto.setData(agendaConsulta.getData());
-            agendaConsultaDto.setHora(agendaConsulta.getHora());
-            agendaConsultaDto.setCancelado(agendaConsulta.getCancelado());
-            agendaConsultaDto.setPaciente(agendaConsulta.getPaciente());
-            agendaConsultaDto.setMotivoCancelamento(agendaConsulta.getMotivoCancelamento());
-            return agendaConsultaDto;
+            if (isAvailable(agendaData.getData(), agendaData.getHora())){
+                AgendaConsulta agendaConsulta = optional.get();
+
+                agendaConsulta.setUsuario(agendaData.getUsuario());
+                agendaConsulta.setMedico(agendaData.getMedico());
+                agendaConsulta.setRetorno(agendaData.getRetorno());
+                agendaConsulta.setData(agendaData.getData());
+                agendaConsulta.setHora(agendaConsulta.getHora());
+                agendaConsulta.setCancelado(agendaData.getCancelado());
+                agendaConsulta.setPaciente(agendaData.getPaciente());
+                agendaConsulta.setMotivoCancelamento(agendaData.getMotivoCancelamento());
+
+                AgendaConsulta savedAgenda = agendaRepository.save(agendaConsulta);
+
+                AgendaConsultaDto agendaConsultaDto = mapper.map(savedAgenda, AgendaConsultaDto.class);
+                return agendaConsultaDto;
+            }else {
+                throw new Exception("Essa data e horário estão indisponiveis");
+            }
         }
     }
 
-    public AgendaConsultaDto setReturn(AgendaConsultaCreateRequest agendaConsultaCreateRequest){
+    public AgendaConsultaDto setReturn(AgendaConsultaCreateRequest agendaConsultaCreateRequest) throws Exception{
         if(isAvailable(agendaConsultaCreateRequest.getData(), agendaConsultaCreateRequest.getHora())){
             AgendaConsulta agendaConsulta = mapper.map(agendaConsultaCreateRequest, AgendaConsulta.class);
             agendaConsulta.setRetorno(true);
@@ -86,20 +93,23 @@ public class AgendaService {
             AgendaConsultaDto agendaConsultaDto = mapper.map(savedConsulta, AgendaConsultaDto.class);
             return agendaConsultaDto;
         }else{
-            return null;
+            throw new Exception("Data inserida não é possível");
         }
     }
 
     public AgendaConsultaDto cancelConsulta(Long id, String motivo){
         Optional<AgendaConsulta> optional = agendaRepository.findById(id);
-        if(optional.isEmpty() || !isAvailable(optional.get().getData(), optional.get().getHora())){
+        if(optional.isEmpty()){
             return null;
         }else{
             AgendaConsulta agendaConsulta = optional.get();
+
             agendaConsulta.setCancelado(true);
             agendaConsulta.setMotivoCancelamento(motivo);
-            AgendaConsultaDto savedAgenda = mapper.map(agendaConsulta, AgendaConsultaDto.class);
-            AgendaConsultaDto agendaConsultaDto = update(agendaConsulta.getId(), savedAgenda);
+
+            AgendaConsulta savedAgenda = agendaRepository.save(agendaConsulta);
+
+            AgendaConsultaDto agendaConsultaDto = mapper.map(savedAgenda, AgendaConsultaDto.class);
             return agendaConsultaDto;
         }
     }
