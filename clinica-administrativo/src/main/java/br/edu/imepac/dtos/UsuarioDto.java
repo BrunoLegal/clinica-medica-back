@@ -19,7 +19,7 @@ public class UsuarioDto {
     private Boolean cadastroMedico;
     private Boolean agendamentoConsulta;
     private Boolean cancelamentoConsulta;
-    private Boolean moduloAdmnistrativo;
+    private Boolean moduloAdministrativo;
     private Boolean moduloAgendamento;
     private Boolean moduloAtendimento;
 }

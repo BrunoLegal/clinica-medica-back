@@ -48,7 +48,7 @@ public class UsuarioService {
             usuarioModel.setCadastroMedico(usuarioData.getCadastroMedico());
             usuarioModel.setAgendamentoConsulta(usuarioData.getAgendamentoConsulta());
             usuarioModel.setCancelamentoConsulta(usuarioData.getCancelamentoConsulta());
-            usuarioModel.setModuloAdmnistrativo(usuarioData.getModuloAdmnistrativo());
+            usuarioModel.setModuloAdministrativo(usuarioData.getModuloAdministrativo());
             usuarioModel.setModuloAgendamento(usuarioData.getModuloAgendamento());
             usuarioModel.setModuloAtendimento(usuarioData.getModuloAtendimento());
             UsuarioModel updatedUsuario = usuarioRepository.save(usuarioModel);

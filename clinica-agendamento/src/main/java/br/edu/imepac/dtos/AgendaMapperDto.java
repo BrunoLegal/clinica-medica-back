@@ -7,18 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AgendaConsultaDto {
+public class AgendaMapperDto {
     private Long id;
     private UsuarioModel usuario;
     private PacienteModel paciente;
     private MedicoModel medico;
-    private String data;
     private String hora;
-    private Boolean retorno = false;
-    private Boolean cancelado = false;
+    private Boolean retorno;
+    private Boolean cancelado;
     private String motivoCancelamento;
 }

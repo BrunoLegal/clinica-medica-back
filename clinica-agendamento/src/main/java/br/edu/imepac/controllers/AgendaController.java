@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,21 +42,31 @@ public class AgendaController {
 
     @PostMapping
     public ResponseEntity<AgendaConsultaDto> createConsulta(@RequestBody AgendaConsultaCreateRequest agendaConsultaCreateRequest){
-        AgendaConsultaDto agendaConsultaDto = agendaService.createConsulta(agendaConsultaCreateRequest);
-        if(agendaConsultaDto != null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
-            return new ResponseEntity<>(agendaConsultaDto, HttpStatus.OK);
+        try {
+            AgendaConsultaDto agendaConsultaDto = agendaService.createConsulta(agendaConsultaCreateRequest);
+            if (agendaConsultaDto != null) {
+                return new ResponseEntity<>(agendaConsultaDto, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<AgendaConsultaDto> updateConsulta(@RequestBody AgendaConsultaDto agendaData, @PathVariable Long id){
-        AgendaConsultaDto agendaConsultaDto = agendaService.update(id, agendaData);
-        if(agendaConsultaDto != null){
-            return new ResponseEntity<>(agendaConsultaDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            AgendaConsultaDto agendaConsultaDto = agendaService.update(id, agendaData);
+            if (agendaConsultaDto != null) {
+                return new ResponseEntity<>(agendaConsultaDto, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
@@ -71,11 +82,16 @@ public class AgendaController {
 
     @PostMapping("/retorno")
     public ResponseEntity<AgendaConsultaDto> scheduleReturn(@RequestBody AgendaConsultaCreateRequest agendaConsultaCreateRequest){
-        AgendaConsultaDto agendaConsultaDto = agendaService.setReturn(agendaConsultaCreateRequest);
-        if(agendaConsultaDto != null){
-            return new ResponseEntity<>(agendaConsultaDto, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            AgendaConsultaDto agendaConsultaDto = agendaService.setReturn(agendaConsultaCreateRequest);
+            if (agendaConsultaDto != null) {
+                return new ResponseEntity<>(agendaConsultaDto, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
@@ -84,6 +100,8 @@ public class AgendaController {
     public void deleteConsulta(@PathVariable Long id){
         agendaService.deleteConsulta(id);
     }
+
+
 
 
 
