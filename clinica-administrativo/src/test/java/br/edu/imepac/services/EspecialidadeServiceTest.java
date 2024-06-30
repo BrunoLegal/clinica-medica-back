@@ -164,7 +164,7 @@ public class EspecialidadeServiceTest {
 
     @Test
     public void updateShouldReturnNull(){
-        //ppreparando parametros
+        //preparando parametros
         var id = anyLong();
 
         EspecialidadeDto parametro = new EspecialidadeDto(id, "socorro");
