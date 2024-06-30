@@ -40,6 +40,7 @@ public class PacienteService {
         PacienteModel savedPaciente = pacienteRepository.save(pacienteModel);
 
         PacienteDto pacienteDto = new PacienteDto();
+        pacienteDto.setId(savedPaciente.getId());
         pacienteDto.setNome(savedPaciente.getNome());
         pacienteDto.setNumero_RG(savedPaciente.getNumero_RG());
         pacienteDto.setOrgao_Emissor(savedPaciente.getOrgao_Emissor());
