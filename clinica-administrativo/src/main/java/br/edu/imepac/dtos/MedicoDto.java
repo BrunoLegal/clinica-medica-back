@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class MedicoDto {
     private Long id;
     private String nome;
-    private EspecialidadeModel especialidade;
     private String crm;
+    private EspecialidadeModel especialidade;
 }
