@@ -131,7 +131,7 @@ public class AgendaService {
             return null;
         }else{
             AgendaConsulta agendaConsulta = optional.get();
-
+            System.out.println(motivo);
             agendaConsulta.setCancelado(true);
             agendaConsulta.setMotivoCancelamento(motivo);
 

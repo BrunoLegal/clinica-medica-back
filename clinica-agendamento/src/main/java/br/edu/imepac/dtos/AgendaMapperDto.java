@@ -18,4 +18,5 @@ public class AgendaMapperDto {
     private String hora;
     private Boolean retorno;
     private Boolean cancelado;
+    private String motivoCancelamento;
 }
