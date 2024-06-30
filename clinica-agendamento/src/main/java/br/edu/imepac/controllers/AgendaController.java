@@ -45,9 +45,9 @@ public class AgendaController {
         try {
             AgendaConsultaDto agendaConsultaDto = agendaService.createConsulta(agendaConsultaCreateRequest);
             if (agendaConsultaDto != null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(agendaConsultaDto, HttpStatus.CREATED);
             } else {
-                return new ResponseEntity<>(agendaConsultaDto, HttpStatus.OK);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -83,7 +83,7 @@ public class AgendaController {
         try {
             AgendaConsultaDto agendaConsultaDto = agendaService.setReturn(agendaConsultaCreateRequest);
             if (agendaConsultaDto != null) {
-                return new ResponseEntity<>(agendaConsultaDto, HttpStatus.OK);
+                return new ResponseEntity<>(agendaConsultaDto, HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

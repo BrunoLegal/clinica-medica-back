@@ -16,7 +16,7 @@ public class AgendaConsultaCreateRequest {
     private UsuarioModel usuario;
     private PacienteModel paciente;
     private MedicoModel medico;
-    private Date data;
+    private String data;
     private String hora;
     private Boolean retorno;
     private Boolean cancelado;

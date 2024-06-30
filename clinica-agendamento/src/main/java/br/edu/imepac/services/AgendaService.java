@@ -4,11 +4,13 @@ import br.edu.imepac.dtos.AgendaConsultaCreateRequest;
 import br.edu.imepac.dtos.AgendaConsultaDto;
 import br.edu.imepac.models.AgendaConsulta;
 import br.edu.imepac.repositories.AgendaRepository;
+import br.edu.imepac.util.DateUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,11 +24,14 @@ public class AgendaService {
     @Autowired
     private ModelMapper mapper;
     public AgendaConsultaDto createConsulta(AgendaConsultaCreateRequest agendaConsultaCreateRequest) throws Exception{
+
         if(isAvailable(agendaConsultaCreateRequest.getData(), agendaConsultaCreateRequest.getHora())) {
             AgendaConsulta agendaConsulta = mapper.map(agendaConsultaCreateRequest, AgendaConsulta.class);
+            agendaConsulta.setData(DateUtil.convertStringToSqlDate(agendaConsultaCreateRequest.getData()));
 
             AgendaConsulta savedAgenda = agendaRepository.save(agendaConsulta);
             AgendaConsultaDto agendaConsultaDto = mapper.map(savedAgenda, AgendaConsultaDto.class);
+            agendaConsultaDto.setData(DateUtil.convertSqlDateToString(savedAgenda.getData()));
 
             return agendaConsultaDto;
         }else{
@@ -34,9 +39,14 @@ public class AgendaService {
         }
     }
 
-    public Boolean isAvailable(Date date, String hora){
-        Optional<List<AgendaConsulta>> optional = agendaRepository.findByDataAndHoraAndCanceladoFalse(date, hora);
-        return optional.isEmpty();
+    public Boolean isAvailable(String date, String hora){
+        try {
+            Date sqlDate = DateUtil.convertStringToSqlDate(date);
+            Optional<List<AgendaConsulta>> optional = agendaRepository.findByDataAndHoraAndCanceladoFalse(sqlDate, hora);
+            return optional.isEmpty();
+        }catch (ParseException e){
+            return null;
+        }
     }
 
     public List<AgendaConsultaDto> findAll(){
@@ -68,7 +78,7 @@ public class AgendaService {
                 agendaConsulta.setUsuario(agendaData.getUsuario());
                 agendaConsulta.setMedico(agendaData.getMedico());
                 agendaConsulta.setRetorno(agendaData.getRetorno());
-                agendaConsulta.setData(agendaData.getData());
+                agendaConsulta.setData(DateUtil.convertStringToSqlDate(agendaData.getData()));
                 agendaConsulta.setHora(agendaConsulta.getHora());
                 agendaConsulta.setCancelado(agendaData.getCancelado());
                 agendaConsulta.setPaciente(agendaData.getPaciente());
