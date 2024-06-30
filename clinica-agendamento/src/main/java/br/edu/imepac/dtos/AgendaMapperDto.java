@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AgendaMapper {
+public class AgendaMapperDto {
     private Long id;
     private UsuarioModel usuario;
     private PacienteModel paciente;

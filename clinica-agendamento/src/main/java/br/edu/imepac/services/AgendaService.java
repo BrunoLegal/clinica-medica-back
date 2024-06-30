@@ -2,7 +2,7 @@ package br.edu.imepac.services;
 
 import br.edu.imepac.dtos.AgendaConsultaCreateRequest;
 import br.edu.imepac.dtos.AgendaConsultaDto;
-import br.edu.imepac.dtos.AgendaMapper;
+import br.edu.imepac.dtos.AgendaMapperDto;
 import br.edu.imepac.models.AgendaConsulta;
 import br.edu.imepac.repositories.AgendaRepository;
 import br.edu.imepac.util.DateUtil;
@@ -27,14 +27,14 @@ public class AgendaService {
     public AgendaConsultaDto createConsulta(AgendaConsultaCreateRequest agendaConsultaCreateRequest) throws Exception{
 
         if(isAvailable(agendaConsultaCreateRequest.getData(), agendaConsultaCreateRequest.getHora())) {
-            AgendaMapper agendaMapper = mapper.map(agendaConsultaCreateRequest, AgendaMapper.class);
-            System.out.println("agendaMapper: "+agendaMapper.getClass());
-            AgendaConsulta agendaConsulta = mapper.map(agendaMapper, AgendaConsulta.class);
+            AgendaMapperDto agendaMapperDTO = mapper.map(agendaConsultaCreateRequest, AgendaMapperDto.class);
+            System.out.println("agendaMapper: "+ agendaMapperDTO.getClass());
+            AgendaConsulta agendaConsulta = mapper.map(agendaMapperDTO, AgendaConsulta.class);
             agendaConsulta.setData(DateUtil.convertStringToSqlDate(agendaConsultaCreateRequest.getData()));
 
             AgendaConsulta savedAgenda = agendaRepository.save(agendaConsulta);
-            AgendaMapper savedAgendaMapper = mapper.map(savedAgenda, AgendaMapper.class);
-            AgendaConsultaDto agendaConsultaDto = mapper.map(savedAgendaMapper, AgendaConsultaDto.class);
+            AgendaMapperDto savedAgendaMapperDto = mapper.map(savedAgenda, AgendaMapperDto.class);
+            AgendaConsultaDto agendaConsultaDto = mapper.map(savedAgendaMapperDto, AgendaConsultaDto.class);
             agendaConsultaDto.setData(DateUtil.convertSqlDateToString(savedAgenda.getData()));
 
             return agendaConsultaDto;
@@ -62,7 +62,9 @@ public class AgendaService {
     public List<AgendaConsultaDto> findAll(){
         List<AgendaConsulta> list = agendaRepository.findAll();
         return list.stream().map(agenda -> {
-            AgendaConsultaDto agendaConsultaDto = mapper.map(agenda, AgendaConsultaDto.class);
+            AgendaMapperDto agendaMapperDto = mapper.map(agenda, AgendaMapperDto.class);
+            AgendaConsultaDto agendaConsultaDto = mapper.map(agendaMapperDto, AgendaConsultaDto.class);
+            agendaConsultaDto.setData(DateUtil.convertSqlDateToString(agenda.getData()));
             return agendaConsultaDto;
         }).collect(Collectors.toList());
     }
@@ -72,7 +74,9 @@ public class AgendaService {
         if(optional.isEmpty()){
             return null;
         }else{
-            AgendaConsultaDto agendaConsultaDto = mapper.map(optional.get(), AgendaConsultaDto.class);
+            AgendaMapperDto agendaMapperDto = mapper.map(optional.get(), AgendaMapperDto.class);
+            AgendaConsultaDto agendaConsultaDto = mapper.map(agendaMapperDto, AgendaConsultaDto.class);
+            agendaConsultaDto.setData(DateUtil.convertSqlDateToString(optional.get().getData()));
             return agendaConsultaDto;
         }
     }
@@ -95,8 +99,9 @@ public class AgendaService {
                 agendaConsulta.setMotivoCancelamento(agendaData.getMotivoCancelamento());
 
                 AgendaConsulta savedAgenda = agendaRepository.save(agendaConsulta);
-
-                AgendaConsultaDto agendaConsultaDto = mapper.map(savedAgenda, AgendaConsultaDto.class);
+                AgendaMapperDto agendaMapperDTO = mapper.map(savedAgenda, AgendaMapperDto.class);
+                AgendaConsultaDto agendaConsultaDto = mapper.map(agendaMapperDTO, AgendaConsultaDto.class);
+                agendaConsultaDto.setData(DateUtil.convertSqlDateToString(savedAgenda.getData()));
                 return agendaConsultaDto;
             }else {
                 throw new Exception("Essa data e horário estão indisponiveis");
@@ -106,11 +111,14 @@ public class AgendaService {
 
     public AgendaConsultaDto setReturn(AgendaConsultaCreateRequest agendaConsultaCreateRequest) throws Exception{
         if(isAvailable(agendaConsultaCreateRequest.getData(), agendaConsultaCreateRequest.getHora())){
-            AgendaConsulta agendaConsulta = mapper.map(agendaConsultaCreateRequest, AgendaConsulta.class);
+            AgendaMapperDto agendaMapperDto = mapper.map(agendaConsultaCreateRequest, AgendaMapperDto.class);
+            AgendaConsulta agendaConsulta = mapper.map(agendaMapperDto, AgendaConsulta.class);
+            agendaConsulta.setData(DateUtil.convertStringToSqlDate(agendaConsultaCreateRequest.getData()));
             agendaConsulta.setRetorno(true);
             AgendaConsulta savedConsulta = agendaRepository.save(agendaConsulta);
-
-            AgendaConsultaDto agendaConsultaDto = mapper.map(savedConsulta, AgendaConsultaDto.class);
+            AgendaMapperDto savedMapperDto = mapper.map(savedConsulta, AgendaMapperDto.class);
+            AgendaConsultaDto agendaConsultaDto = mapper.map(savedMapperDto, AgendaConsultaDto.class);
+            agendaConsultaDto.setData(DateUtil.convertSqlDateToString(savedConsulta.getData()));
             return agendaConsultaDto;
         }else{
             throw new Exception("Data inserida não é possível");
@@ -128,8 +136,9 @@ public class AgendaService {
             agendaConsulta.setMotivoCancelamento(motivo);
 
             AgendaConsulta savedAgenda = agendaRepository.save(agendaConsulta);
-
-            AgendaConsultaDto agendaConsultaDto = mapper.map(savedAgenda, AgendaConsultaDto.class);
+            AgendaMapperDto agendaMapperDto = mapper.map(savedAgenda,AgendaMapperDto.class);
+            AgendaConsultaDto agendaConsultaDto = mapper.map(agendaMapperDto, AgendaConsultaDto.class);
+            agendaConsultaDto.setData(DateUtil.convertSqlDateToString(savedAgenda.getData()));
             return agendaConsultaDto;
         }
     }
