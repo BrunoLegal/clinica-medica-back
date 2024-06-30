@@ -20,22 +20,22 @@ public class PacienteService {
     public PacienteDto save(PacienteCreateRequest pacienteCreateRequest){
         PacienteModel pacienteModel = new PacienteModel();
         pacienteModel.setNome(pacienteCreateRequest.getNome());
-        pacienteModel.setNumero_RG(pacienteModel.getNumero_RG());
-        pacienteModel.setOrgao_Emissor(pacienteModel.getOrgao_Emissor());
-        pacienteModel.setNumero_CPF(pacienteModel.getNumero_CPF());
-        pacienteModel.setEndereco(pacienteModel.getEndereco());
-        pacienteModel.setNumero(pacienteModel.getNumero());
-        pacienteModel.setComplemento(pacienteModel.getComplemento());
-        pacienteModel.setBairro(pacienteModel.getBairro());
-        pacienteModel.setCidade(pacienteModel.getCidade());
-        pacienteModel.setEstado(pacienteModel.getEstado());
-        pacienteModel.setTelefone(pacienteModel.getTelefone());
-        pacienteModel.setCelular(pacienteModel.getCelular());
-        pacienteModel.setData_de_nascimento(pacienteModel.getData_de_nascimento());
-        pacienteModel.setSexo(pacienteModel.getSexo());
-        pacienteModel.setTem_convenio(pacienteModel.getTem_convenio());
-        pacienteModel.setConvenio(pacienteModel.getConvenio());
-        pacienteModel.setSenha_acesso(pacienteModel.getSenha_acesso());
+        pacienteModel.setNumero_RG(pacienteCreateRequest.getNumero_RG());
+        pacienteModel.setOrgao_Emissor(pacienteCreateRequest.getOrgao_Emissor());
+        pacienteModel.setNumero_CPF(pacienteCreateRequest.getNumero_CPF());
+        pacienteModel.setEndereco(pacienteCreateRequest.getEndereco());
+        pacienteModel.setNumero(pacienteCreateRequest.getNumero());
+        pacienteModel.setComplemento(pacienteCreateRequest.getComplemento());
+        pacienteModel.setBairro(pacienteCreateRequest.getBairro());
+        pacienteModel.setCidade(pacienteCreateRequest.getCidade());
+        pacienteModel.setEstado(pacienteCreateRequest.getEstado());
+        pacienteModel.setTelefone(pacienteCreateRequest.getTelefone());
+        pacienteModel.setCelular(pacienteCreateRequest.getCelular());
+        pacienteModel.setData_de_nascimento(pacienteCreateRequest.getData_de_nascimento());
+        pacienteModel.setSexo(pacienteCreateRequest.getSexo());
+        pacienteModel.setTem_convenio(pacienteCreateRequest.getTem_convenio());
+        pacienteModel.setConvenio(pacienteCreateRequest.getConvenio());
+        pacienteModel.setSenha_acesso(pacienteCreateRequest.getSenha_acesso());
 
         PacienteModel savedPaciente = pacienteRepository.save(pacienteModel);
 
@@ -45,14 +45,12 @@ public class PacienteService {
         pacienteDto.setOrgao_Emissor(savedPaciente.getOrgao_Emissor());
         pacienteDto.setNumero_CPF(savedPaciente.getNumero_CPF());
         pacienteDto.setEndereco(savedPaciente.getEndereco());
-        pacienteDto.setEndereco(savedPaciente.getEndereco());
         pacienteDto.setNumero(savedPaciente.getNumero());
         pacienteDto.setComplemento(savedPaciente.getComplemento());
         pacienteDto.setBairro(savedPaciente.getBairro());
         pacienteDto.setCidade(savedPaciente.getCidade());
         pacienteDto.setEstado(savedPaciente.getEstado());
         pacienteDto.setTelefone(savedPaciente.getTelefone());
-        pacienteDto.setCelular(savedPaciente.getCelular());
         pacienteDto.setCelular(savedPaciente.getCelular());
         pacienteDto.setData_de_nascimento(savedPaciente.getData_de_nascimento());
         pacienteDto.setSexo(savedPaciente.getSexo());

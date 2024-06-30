@@ -5,12 +5,12 @@ import br.edu.imepac.services.ConvenioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 /*
@@ -24,6 +24,8 @@ lembre-se de colocar em todos os operations a tag correspondente à classe (veja
 @RequestMapping("convenio")
 public class ConvenioController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ConvenioController.class);
+
     @Autowired
     private ConvenioService convenioService;
 
@@ -36,6 +38,7 @@ public class ConvenioController {
     @PostMapping
     public ResponseEntity<ConvenioDto> saveConvenio(@RequestBody ConvenioCreateRequest convenioCreateRequest){
         ConvenioDto saveConvenio = convenioService.save(convenioCreateRequest);
+        logger.info("Convênio salvo: {}", saveConvenio);
         return new ResponseEntity<>(saveConvenio, HttpStatus.CREATED);
     }
 
@@ -48,6 +51,7 @@ public class ConvenioController {
     @GetMapping
     public ResponseEntity<List<ConvenioDto>> listAllConvenios(){
         List<ConvenioDto> convenios = convenioService.findAll();
+        logger.info("Convênios encostrados: {}", convenios);
         return new ResponseEntity<>(convenios, HttpStatus.OK);
     }
 
@@ -62,9 +66,14 @@ public class ConvenioController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ConvenioDto> updateConvenio(@PathVariable Long id, @RequestBody ConvenioDto convenioDetails){
         ConvenioDto updateConvenio = convenioService.update(id, convenioDetails);
+        logger.info("Buscando convênio de id {}",id);
         if(updateConvenio != null){
+            logger.info("Convenio atualizado com sucesso: {}", id);
+
             return new ResponseEntity<>(updateConvenio, HttpStatus.OK);
         }else{
+            logger.warn("Convenio com id {}, não encontrado", id);
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -80,16 +89,19 @@ public class ConvenioController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ConvenioDto> getConvenioById(@PathVariable Long id){
         ConvenioDto convenioDto = convenioService.findById(id);
+        logger.info("Buscando convenio de id: {}", id);
         if(convenioDto != null){
+            logger.info("Buscando convênio de id {}",id);
             return new ResponseEntity<>(convenioDto, HttpStatus.OK);
         }else{
+            logger.warn("Convenio com id {}, não encontrado", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @Operation(description = "", tags = "Convênio")
     @ApiResponses(value = {
-            @ApiResponse( responseCode = "200", description = "convênio salvo com sucesso"),
+            @ApiResponse( responseCode = "200", description = "convênio deletado com sucesso"),
             @ApiResponse( responseCode = "400", description = "erro do cliente"),
             @ApiResponse( responseCode = "500", description = "erro do servidor")
     })
@@ -97,6 +109,7 @@ public class ConvenioController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteConvenio(@PathVariable Long id) {
         convenioService.delete(id);
+        logger.info("Convenio com id: {} deletado com sucesso", id);
     }
 }
 
