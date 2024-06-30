@@ -2,6 +2,7 @@ package br.edu.imepac.services;
 
 import br.edu.imepac.dtos.AgendaConsultaCreateRequest;
 import br.edu.imepac.dtos.AgendaConsultaDto;
+import br.edu.imepac.dtos.AgendaMapper;
 import br.edu.imepac.models.AgendaConsulta;
 import br.edu.imepac.repositories.AgendaRepository;
 import br.edu.imepac.util.DateUtil;
@@ -26,11 +27,14 @@ public class AgendaService {
     public AgendaConsultaDto createConsulta(AgendaConsultaCreateRequest agendaConsultaCreateRequest) throws Exception{
 
         if(isAvailable(agendaConsultaCreateRequest.getData(), agendaConsultaCreateRequest.getHora())) {
-            AgendaConsulta agendaConsulta = mapper.map(agendaConsultaCreateRequest, AgendaConsulta.class);
+            AgendaMapper agendaMapper = mapper.map(agendaConsultaCreateRequest, AgendaMapper.class);
+            System.out.println("agendaMapper: "+agendaMapper.getClass());
+            AgendaConsulta agendaConsulta = mapper.map(agendaMapper, AgendaConsulta.class);
             agendaConsulta.setData(DateUtil.convertStringToSqlDate(agendaConsultaCreateRequest.getData()));
 
             AgendaConsulta savedAgenda = agendaRepository.save(agendaConsulta);
-            AgendaConsultaDto agendaConsultaDto = mapper.map(savedAgenda, AgendaConsultaDto.class);
+            AgendaMapper savedAgendaMapper = mapper.map(savedAgenda, AgendaMapper.class);
+            AgendaConsultaDto agendaConsultaDto = mapper.map(savedAgendaMapper, AgendaConsultaDto.class);
             agendaConsultaDto.setData(DateUtil.convertSqlDateToString(savedAgenda.getData()));
 
             return agendaConsultaDto;
@@ -43,7 +47,13 @@ public class AgendaService {
         try {
             Date sqlDate = DateUtil.convertStringToSqlDate(date);
             Optional<List<AgendaConsulta>> optional = agendaRepository.findByDataAndHoraAndCanceladoFalse(sqlDate, hora);
-            return optional.isEmpty();
+            if(optional.isPresent()){
+                List<AgendaConsulta> list = optional.get();
+                System.out.println(list.isEmpty());
+                return list.isEmpty();
+            }else{
+                return true;
+            }
         }catch (ParseException e){
             return null;
         }
