@@ -19,10 +19,11 @@ public class MedicoModel {
 
     @NotNull
     private String nome;
-    @ManyToOne
-    @JoinColumn(name = "id_especialidade")
-    private EspecialidadeModel especialidade;
+
     @NotNull
     private String CRM;
 
+    @ManyToOne
+    @JoinColumn(name = "id_especialidade")
+    private EspecialidadeModel especialidade;
 }
