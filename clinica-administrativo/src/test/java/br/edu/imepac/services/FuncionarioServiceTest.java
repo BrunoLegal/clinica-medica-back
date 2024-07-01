@@ -61,7 +61,7 @@ class FuncionarioServiceTest {
         funcionarioModel1.setCelular("234234234");
         funcionarioModel1.setNumero_Ctps("234234234");
         funcionarioModel1.setNumero_Pis("23423424");
-        funcionarioModel1.setData("27082000");
+        funcionarioModel1.setData_de_nascimento("27082000");
 
         FuncionarioModel funcionarioModel2 = new FuncionarioModel();
         funcionarioModel2.setId(2L);
@@ -79,7 +79,7 @@ class FuncionarioServiceTest {
         funcionarioModel2.setCelular("89784564");
         funcionarioModel2.setNumero_Ctps("4353452");
         funcionarioModel2.setNumero_Pis("453453672");
-        funcionarioModel2.setData("07051999");
+        funcionarioModel2.setData_de_nascimento("07051999");
 
 
         List<FuncionarioModel> mockFuncionarios = Arrays.asList(funcionarioModel1, funcionarioModel2);
@@ -104,7 +104,7 @@ class FuncionarioServiceTest {
         assertEquals("234234234", result.get(0).getCelular());
         assertEquals("234234234", result.get(0).getNumero_Ctps());
         assertEquals("23423424", result.get(0).getNumero_Pis());
-        assertEquals("27082000", result.get(0).getData());
+        assertEquals("27082000", result.get(0).getData_de_nascimento());
 
         assertEquals("Matheus", result.get(1).getNome_Funcionario());
         assertEquals("5345345", result.get(1).getNumero_Rg());
@@ -120,7 +120,7 @@ class FuncionarioServiceTest {
         assertEquals("89784564", result.get(1).getCelular());
         assertEquals("4353452", result.get(1).getNumero_Ctps());
         assertEquals("453453672", result.get(1).getNumero_Pis());
-        assertEquals("07051999", result.get(1).getData());
+        assertEquals("07051999", result.get(1).getData_de_nascimento());
 
     }
 
@@ -145,7 +145,7 @@ class FuncionarioServiceTest {
         funcionarioDto.setCelular("234234234");
         funcionarioDto.setNumero_Ctps("234234234");
         funcionarioDto.setNumero_Pis("23423424");
-        funcionarioDto.setData("27082000");
+        funcionarioDto.setData_de_nascimento("27082000");
 
         FuncionarioModel funcionarioModel = new FuncionarioModel();
         funcionarioModel.setId(id);
@@ -163,7 +163,7 @@ class FuncionarioServiceTest {
         funcionarioModel.setCelular("89784564");
         funcionarioModel.setNumero_Ctps("4353452");
         funcionarioModel.setNumero_Pis("453453672");
-        funcionarioModel.setData("07051999");
+        funcionarioModel.setData_de_nascimento("07051999");
 
         when(funcionarioRepository.findById(id)).thenReturn(Optional.of(funcionarioModel));
         when(funcionarioRepository.save(any(FuncionarioModel.class))).thenReturn(funcionarioModel);
@@ -186,7 +186,7 @@ class FuncionarioServiceTest {
         assertEquals("234234234", resultado.getCelular());
         assertEquals("234234234", resultado.getNumero_Ctps());
         assertEquals("23423424", resultado.getNumero_Pis());
-        assertEquals("27082000", resultado.getData());
+        assertEquals("27082000", resultado.getData_de_nascimento());
     }
 
     @Test
@@ -223,7 +223,7 @@ class FuncionarioServiceTest {
         funcionarioCreateRequest.setCelular("235234235");
         funcionarioCreateRequest.setNumero_Ctps("457457457");
         funcionarioCreateRequest.setNumero_Pis("457457457");
-        funcionarioCreateRequest.setData("10082000");
+        funcionarioCreateRequest.setData_de_nascimento("10082000");
 
         FuncionarioModel savedFuncionario = new FuncionarioModel();
         savedFuncionario.setId(1L);
@@ -241,7 +241,7 @@ class FuncionarioServiceTest {
         savedFuncionario.setCelular("235234235");
         savedFuncionario.setNumero_Ctps("457457457");
         savedFuncionario.setNumero_Pis("457457457");
-        savedFuncionario.setData("10082000");
+        savedFuncionario.setData_de_nascimento("10082000");
 
         when(funcionarioRepository.save(any(FuncionarioModel.class))).thenReturn(savedFuncionario);
 
@@ -262,7 +262,7 @@ class FuncionarioServiceTest {
         assertEquals("235234235", resultado.getCelular());
         assertEquals("457457457", resultado.getNumero_Ctps());
         assertEquals("457457457", resultado.getNumero_Pis());
-        assertEquals("10082000", resultado.getData());
+        assertEquals("10082000", resultado.getData_de_nascimento());
     }
 
         @Test
@@ -283,7 +283,7 @@ class FuncionarioServiceTest {
             funcionarioModel.setCelular("9988776655");
             funcionarioModel.setNumero_Ctps("11223344");
             funcionarioModel.setNumero_Pis("55667788");
-            funcionarioModel.setData("01011990");
+            funcionarioModel.setData_de_nascimento("01011990");
 
             when(funcionarioRepository.findById(anyLong())).thenReturn(Optional.of(funcionarioModel));
 
@@ -303,7 +303,7 @@ class FuncionarioServiceTest {
             assertEquals("9988776655", resultado.getCelular());
             assertEquals("11223344", resultado.getNumero_Ctps());
             assertEquals("55667788", resultado.getNumero_Pis());
-            assertEquals("01011990", resultado.getData());
+            assertEquals("01011990", resultado.getData_de_nascimento());
         }
 
     @Test

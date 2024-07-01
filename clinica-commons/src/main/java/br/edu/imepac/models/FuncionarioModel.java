@@ -61,6 +61,6 @@ public class FuncionarioModel {
     private String numero_Pis;
 
     @NotNull
-    private String Data;
+    private String data_de_nascimento;
 
 }

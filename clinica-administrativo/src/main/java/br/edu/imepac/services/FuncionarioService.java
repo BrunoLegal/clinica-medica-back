@@ -55,7 +55,7 @@ public class FuncionarioService {
             funcionarioDto.setCelular(funcionario.getCelular());
             funcionarioDto.setNumero_Ctps(funcionario.getNumero_Ctps());
             funcionarioDto.setNumero_Pis(funcionario.getNumero_Pis());
-            funcionarioDto.setData(funcionario.getData());
+            funcionarioDto.setData_de_nascimento(funcionario.getData_de_nascimento());
 
             return funcionarioDto;
         }).collect(Collectors.toList());
@@ -82,7 +82,7 @@ public class FuncionarioService {
             funcionarioModel.setCelular(funcionarioData.getCelular());
             funcionarioModel.setNumero_Ctps(funcionarioData.getNumero_Ctps());
             funcionarioModel.setNumero_Pis(funcionarioData.getNumero_Pis());
-            funcionarioModel.setData(funcionarioData.getData());
+            funcionarioModel.setData_de_nascimento(funcionarioData.getData_de_nascimento());
 
             FuncionarioModel updatedModel = funcionarioRepository.save(funcionarioModel);
 
@@ -102,7 +102,7 @@ public class FuncionarioService {
             funcionarioDto.setCelular(updatedModel.getCelular());
             funcionarioDto.setNumero_Ctps(updatedModel.getNumero_Ctps());
             funcionarioDto.setNumero_Pis(updatedModel.getNumero_Pis());
-            funcionarioDto.setData(updatedModel.getData());
+            funcionarioDto.setData_de_nascimento(updatedModel.getData_de_nascimento());
             logger.info("Funcionário de id: {} atualizado", id);
             return funcionarioDto;
 
@@ -129,7 +129,7 @@ public class FuncionarioService {
         funcionarioModel.setCelular(funcionarioCreateRequest.getCelular());
         funcionarioModel.setNumero_Ctps(funcionarioCreateRequest.getNumero_Ctps());
         funcionarioModel.setNumero_Pis(funcionarioCreateRequest.getNumero_Pis());
-        funcionarioModel.setData(funcionarioCreateRequest.getData());
+        funcionarioModel.setData_de_nascimento(funcionarioCreateRequest.getData_de_nascimento());
 
         FuncionarioModel savedFuncionario = funcionarioRepository.save(funcionarioModel);
         logger.info("Convenio {} salvo", savedFuncionario);
@@ -150,7 +150,7 @@ public class FuncionarioService {
         funcionarioDto.setCelular(savedFuncionario.getCelular());
         funcionarioDto.setNumero_Ctps(savedFuncionario.getNumero_Ctps());
         funcionarioDto.setNumero_Pis(savedFuncionario.getNumero_Pis());
-        funcionarioDto.setData(savedFuncionario.getData());
+        funcionarioDto.setData_de_nascimento(savedFuncionario.getData_de_nascimento());
 
         return funcionarioDto;
     }
@@ -178,7 +178,7 @@ public class FuncionarioService {
             funcionarioDto.setCelular(funcionarioModel.getCelular());
             funcionarioDto.setNumero_Ctps(funcionarioModel.getNumero_Ctps());
             funcionarioDto.setNumero_Pis(funcionarioModel.getNumero_Pis());
-            funcionarioDto.setData(funcionarioModel.getData());
+            funcionarioDto.setData_de_nascimento(funcionarioModel.getData_de_nascimento());
             logger.info("Funcionario de id: {} encontrado:{}", id,funcionarioModel);
 
             return funcionarioDto;
