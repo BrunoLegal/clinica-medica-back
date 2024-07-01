@@ -4,6 +4,8 @@ import br.edu.imepac.dtos.PacienteCreateRequest;
 import br.edu.imepac.dtos.PacienteDto;
 import br.edu.imepac.models.PacienteModel;
 import br.edu.imepac.repositories.PacienteRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PacienteService {
+    private static final Logger logger = LoggerFactory.getLogger(PacienteService.class);
+
     @Autowired
     private PacienteRepository pacienteRepository;
 
@@ -38,6 +42,7 @@ public class PacienteService {
         pacienteModel.setSenha_acesso(pacienteCreateRequest.getSenha_acesso());
 
         PacienteModel savedPaciente = pacienteRepository.save(pacienteModel);
+        logger.info("Paciente {} salvo", savedPaciente);
 
         PacienteDto pacienteDto = new PacienteDto();
         pacienteDto.setId(savedPaciente.getId());
@@ -63,6 +68,7 @@ public class PacienteService {
     }
 
     public PacienteDto findById(Long id){
+        logger.info("Buscando paciente de id: {}", id);
         Optional<PacienteModel> optionalMedicoDto = pacienteRepository.findById(id);
         if(optionalMedicoDto.isPresent()){
             PacienteModel pacienteModel = optionalMedicoDto.get();
@@ -85,14 +91,17 @@ public class PacienteService {
             pacienteDto.setTem_convenio(pacienteModel.getTem_convenio());
             pacienteDto.setConvenio(pacienteModel.getConvenio());
             pacienteDto.setSenha_acesso(pacienteModel.getSenha_acesso());
+            logger.info("Paciente de id: {} encontrado:{}", id,pacienteModel);
             return pacienteDto;
         }else{
+            logger.warn("Paciente de id:{} não encontrado", id);
             return null;
         }
 
     }
 
     public List<PacienteDto> findAll(){
+        logger.info("Buscando paciente");
         List<PacienteModel> listaModel = pacienteRepository.findAll();
         return listaModel.stream().map(paciente -> {
             PacienteDto pacienteDto = new PacienteDto();
@@ -120,10 +129,13 @@ public class PacienteService {
     }
 
     public void delete(Long id){
+        logger.info("Deletando paciente com ID: {}", id);
         pacienteRepository.deleteById(id);
+        logger.info("Paciente com ID: {} deletado com sucesso", id);
     }
 
     public PacienteDto update (Long id, PacienteDto pacienteData){
+        logger.info("Buscando paciente com id :{}", id);
         Optional<PacienteModel> optionalPacienteDto = pacienteRepository.findById(id);
         if(optionalPacienteDto.isPresent()){
             PacienteModel pacienteModel = optionalPacienteDto.get();
@@ -166,9 +178,11 @@ public class PacienteService {
             pacienteDto.setTem_convenio(updatedModel.getTem_convenio());
             pacienteDto.setConvenio(updatedModel.getConvenio());
             pacienteDto.setSenha_acesso(updatedModel.getSenha_acesso());
+            logger.info("Paciente de id: {} atualizado", id);
             return pacienteDto;
 
         }else{
+            logger.warn("Paciente de id: {} não encontrado", id);
             return null;
         }
 
