@@ -23,5 +23,5 @@ public class FuncionarioDto {
     private String celular;
     private String numero_Ctps;
     private String numero_Pis;
-    private String Data;
+    private String data_de_nascimento;
 }
