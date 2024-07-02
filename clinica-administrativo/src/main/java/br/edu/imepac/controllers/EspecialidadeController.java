@@ -34,7 +34,7 @@ public class EspecialidadeController {
     @GetMapping
     public ResponseEntity<List<EspecialidadeDto>> listEspecialidade(){
         List<EspecialidadeDto> list = especialidadeService.findAll();
-        logger.info("Especialiades encostradas: {}", list);
+        logger.info("Especialiades encontradas: {}", list);
         if(list.isEmpty()){
             logger.info("NOT FOUND");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -54,7 +54,7 @@ public class EspecialidadeController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EspecialidadeDto> findEspecialidade(@PathVariable Long id){
         EspecialidadeDto especialidadeDto = especialidadeService.findById(id);
-        logger.info("Especialiade encostrada por id: {}", especialidadeDto);
+        logger.info("Especialiade encontrada por id: {}", especialidadeDto);
         if(especialidadeDto != null){
             return new ResponseEntity<>(especialidadeDto, HttpStatus.OK);
         }else{
