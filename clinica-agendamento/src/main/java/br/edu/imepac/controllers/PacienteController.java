@@ -33,7 +33,7 @@ public class PacienteController {
     @GetMapping
     public ResponseEntity<List<PacienteDto>> listPaciente(){
         List<PacienteDto> list = pacienteService.findAll();
-        logger.info("Pacientes encostrados: {}", list);
+        logger.info("Pacientes encontrados: {}", list);
 
         if(list.isEmpty()){
             logger.info("NOT FOUND");
@@ -54,13 +54,11 @@ public class PacienteController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<PacienteDto> findPaciente(@PathVariable Long id){
         PacienteDto pacienteDto = pacienteService.findById(id);
-        logger.info("Paciente encostrado por id: {}", pacienteDto);
+        logger.info("Paciente encontrado por id: {}", pacienteDto);
 
         if(pacienteDto != null){
-            logger.info("OK", pacienteDto);
             return new ResponseEntity<>(pacienteDto, HttpStatus.OK);
         }else{
-            logger.info("NOT FOUND", pacienteDto);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
