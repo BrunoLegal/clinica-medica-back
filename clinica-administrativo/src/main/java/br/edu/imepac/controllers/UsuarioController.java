@@ -25,7 +25,7 @@ public class UsuarioController {
     @GetMapping
     public ResponseEntity<List<UsuarioDto>> listAllUsers(){
         List<UsuarioDto> list = usuarioService.findAll();
-        logger.info("Funcionários encostrados: {}", list);
+        logger.info("Usuários encostrados: {}", list);
         if(list.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
