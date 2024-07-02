@@ -1,12 +1,13 @@
 package br.edu.imepac.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "atendimentos")
+@Table(name = "prontuario_paciente")
 @Data
 public class AtendimentoModel {
 
@@ -14,16 +15,14 @@ public class AtendimentoModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "paciente_id", nullable = false)
-    private Long pacienteId;
+    @OneToOne
+    @JoinColumn(name = "id_agenda")
+    private AgendaConsulta idAgenda;
+    @NotNull
+    private String historico;
 
-    @Column(name = "medico_id", nullable = false)
-    private Long medicoId;
+    private String receituario;
 
-    @Column(name = "data_hora", nullable = false)
-    private LocalDateTime dataHora;
-
-    @Column(name = "descrição", nullable = false)
-    private String descricao;
+    private String exames;
 
 }
