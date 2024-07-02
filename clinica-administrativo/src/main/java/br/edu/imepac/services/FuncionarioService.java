@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 @Service
 public class FuncionarioService {
 
-    private static final Logger logger = LoggerFactory.getLogger(FuncionarioService.class);
-
     @Autowired
     private FuncionarioRepository funcionarioRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(FuncionarioService.class);
 
     private ModelMapper modelMapper;
 
