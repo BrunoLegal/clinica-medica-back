@@ -1,9 +1,14 @@
 package br.edu.imepac.services;
 
+import br.edu.imepac.dtos.ConvenioCreateRequest;
+import br.edu.imepac.dtos.ConvenioDto;
 import br.edu.imepac.dtos.FuncionarioCreateRequest;
 import br.edu.imepac.dtos.FuncionarioDto;
+import br.edu.imepac.models.ConvenioModel;
 import br.edu.imepac.models.FuncionarioModel;
 import br.edu.imepac.repositories.FuncionarioRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,32 +23,39 @@ public class FuncionarioService {
     @Autowired
     private FuncionarioRepository funcionarioRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(FuncionarioService.class);
+
     private ModelMapper modelMapper;
 
+
     public void delete (Long id){
+        logger.info("Deletando funcionário com ID: {}", id);
         funcionarioRepository.deleteById(id);
+        logger.info("Funcionário com ID: {} deletado com sucesso", id);
+
     }
 
     public List<FuncionarioDto> findAll(){
-        List<FuncionarioModel> funcionarioModels = funcionarioRepository.findAll();
-        return funcionarioModels.stream().map(funcionarios -> {
+        logger.info("Buscando funcionários");
+        List<FuncionarioModel> funcionarios = funcionarioRepository.findAll();
+        return funcionarios.stream().map(funcionario -> {
             FuncionarioDto funcionarioDto = new FuncionarioDto();
 
-            funcionarioDto.setNome_Funcionario(funcionarios.getNome_Funcionario());
-            funcionarioDto.setNumero_Rg(funcionarios.getNumero_Rg());
-            funcionarioDto.setOrgao_Emissor(funcionarios.getOrgao_Emissor());
-            funcionarioDto.setNumero_Cpf(funcionarios.getNumero_Cpf());
-            funcionarioDto.setEndereco(funcionarios.getEndereco());
-            funcionarioDto.setNumero(funcionarios.getNumero());
-            funcionarioDto.setComplemento(funcionarios.getComplemento());
-            funcionarioDto.setBairro(funcionarios.getBairro());
-            funcionarioDto.setCidade(funcionarios.getCidade());
-            funcionarioDto.setEstado(funcionarios.getEstado());
-            funcionarioDto.setTelefone(funcionarios.getTelefone());
-            funcionarioDto.setCelular(funcionarios.getCelular());
-            funcionarioDto.setNumero_Ctps(funcionarios.getNumero_Ctps());
-            funcionarioDto.setNumero_Pis(funcionarios.getNumero_Pis());
-            funcionarioDto.setData(funcionarios.getData());
+            funcionarioDto.setNome_Funcionario(funcionario.getNome_Funcionario());
+            funcionarioDto.setNumero_Rg(funcionario.getNumero_Rg());
+            funcionarioDto.setOrgao_Emissor(funcionario.getOrgao_Emissor());
+            funcionarioDto.setNumero_Cpf(funcionario.getNumero_Cpf());
+            funcionarioDto.setEndereco(funcionario.getEndereco());
+            funcionarioDto.setNumero(funcionario.getNumero());
+            funcionarioDto.setComplemento(funcionario.getComplemento());
+            funcionarioDto.setBairro(funcionario.getBairro());
+            funcionarioDto.setCidade(funcionario.getCidade());
+            funcionarioDto.setEstado(funcionario.getEstado());
+            funcionarioDto.setTelefone(funcionario.getTelefone());
+            funcionarioDto.setCelular(funcionario.getCelular());
+            funcionarioDto.setNumero_Ctps(funcionario.getNumero_Ctps());
+            funcionarioDto.setNumero_Pis(funcionario.getNumero_Pis());
+            funcionarioDto.setData_de_nascimento(funcionario.getData_de_nascimento());
 
             return funcionarioDto;
         }).collect(Collectors.toList());
@@ -51,8 +63,9 @@ public class FuncionarioService {
 
     public FuncionarioDto update (Long id, FuncionarioDto funcionarioData){
         Optional<FuncionarioModel> optionalFuncionarioDto = funcionarioRepository.findById(id);
-        if(optionalFuncionarioDto.isPresent()){
 
+        logger.info("Buscando funcionário com id :{}", id);
+        if(optionalFuncionarioDto.isPresent()){
             FuncionarioModel funcionarioModel = optionalFuncionarioDto.get();
 
             funcionarioModel.setNome_Funcionario(funcionarioData.getNome_Funcionario());
@@ -69,7 +82,7 @@ public class FuncionarioService {
             funcionarioModel.setCelular(funcionarioData.getCelular());
             funcionarioModel.setNumero_Ctps(funcionarioData.getNumero_Ctps());
             funcionarioModel.setNumero_Pis(funcionarioData.getNumero_Pis());
-            funcionarioModel.setData(funcionarioData.getData());
+            funcionarioModel.setData_de_nascimento(funcionarioData.getData_de_nascimento());
 
             FuncionarioModel updatedModel = funcionarioRepository.save(funcionarioModel);
 
@@ -89,15 +102,18 @@ public class FuncionarioService {
             funcionarioDto.setCelular(updatedModel.getCelular());
             funcionarioDto.setNumero_Ctps(updatedModel.getNumero_Ctps());
             funcionarioDto.setNumero_Pis(updatedModel.getNumero_Pis());
-            funcionarioDto.setData(updatedModel.getData());
+            funcionarioDto.setData_de_nascimento(updatedModel.getData_de_nascimento());
+            logger.info("Funcionário de id: {} atualizado", id);
             return funcionarioDto;
 
-        }else {
+        }else{
+            logger.warn("Funcionário de id: {} não encontrado", id);
             return null;
         }
     }
 
     public FuncionarioDto save(FuncionarioCreateRequest funcionarioCreateRequest){
+
         FuncionarioModel funcionarioModel = new FuncionarioModel();
         funcionarioModel.setNome_Funcionario(funcionarioCreateRequest.getNome_Funcionario());
         funcionarioModel.setNumero_Rg(funcionarioCreateRequest.getNumero_Rg());
@@ -113,9 +129,10 @@ public class FuncionarioService {
         funcionarioModel.setCelular(funcionarioCreateRequest.getCelular());
         funcionarioModel.setNumero_Ctps(funcionarioCreateRequest.getNumero_Ctps());
         funcionarioModel.setNumero_Pis(funcionarioCreateRequest.getNumero_Pis());
-        funcionarioModel.setData(funcionarioCreateRequest.getData());
+        funcionarioModel.setData_de_nascimento(funcionarioCreateRequest.getData_de_nascimento());
 
         FuncionarioModel savedFuncionario = funcionarioRepository.save(funcionarioModel);
+        logger.info("Convenio {} salvo", savedFuncionario);
 
         FuncionarioDto funcionarioDto = new FuncionarioDto();
         funcionarioDto.setId(savedFuncionario.getId());
@@ -133,15 +150,17 @@ public class FuncionarioService {
         funcionarioDto.setCelular(savedFuncionario.getCelular());
         funcionarioDto.setNumero_Ctps(savedFuncionario.getNumero_Ctps());
         funcionarioDto.setNumero_Pis(savedFuncionario.getNumero_Pis());
-        funcionarioDto.setData(savedFuncionario.getData());
+        funcionarioDto.setData_de_nascimento(savedFuncionario.getData_de_nascimento());
 
         return funcionarioDto;
     }
 
 
     public FuncionarioDto findById(Long id){
-        Optional<FuncionarioModel> funcionarioSearch = funcionarioRepository.findById(id);
-        if(funcionarioSearch.isPresent()){
+            logger.info("Buscando funcionário de id: {}", id);
+            Optional<FuncionarioModel> funcionarioSearch = funcionarioRepository.findById(id);
+            if(funcionarioSearch.isPresent()){
+
             FuncionarioModel funcionarioModel = funcionarioSearch.get();
             FuncionarioDto funcionarioDto = new FuncionarioDto();
             funcionarioDto.setId(funcionarioModel.getId());
@@ -159,11 +178,13 @@ public class FuncionarioService {
             funcionarioDto.setCelular(funcionarioModel.getCelular());
             funcionarioDto.setNumero_Ctps(funcionarioModel.getNumero_Ctps());
             funcionarioDto.setNumero_Pis(funcionarioModel.getNumero_Pis());
-            funcionarioDto.setData(funcionarioModel.getData());
+            funcionarioDto.setData_de_nascimento(funcionarioModel.getData_de_nascimento());
+            logger.info("Funcionario de id: {} encontrado:{}", id,funcionarioModel);
 
             return funcionarioDto;
 
         }else{
+                logger.warn("Funcionário de id:{} não encontrado", id);
             return null;
         }
     }
