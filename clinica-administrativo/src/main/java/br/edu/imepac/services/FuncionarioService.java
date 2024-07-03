@@ -40,7 +40,7 @@ public class FuncionarioService {
         List<FuncionarioModel> funcionarios = funcionarioRepository.findAll();
         return funcionarios.stream().map(funcionario -> {
             FuncionarioDto funcionarioDto = new FuncionarioDto();
-
+            funcionarioDto.setId(funcionario.getId());
             funcionarioDto.setNome_Funcionario(funcionario.getNome_Funcionario());
             funcionarioDto.setNumero_Rg(funcionario.getNumero_Rg());
             funcionarioDto.setOrgao_Emissor(funcionario.getOrgao_Emissor());
