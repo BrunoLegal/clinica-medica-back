@@ -4,6 +4,8 @@ import br.edu.imepac.dtos.AtendimentoCreateRequest;
 import br.edu.imepac.dtos.AtendimentoDto;
 import br.edu.imepac.models.AtendimentoModel;
 import br.edu.imepac.repository.AtendimentoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ public class AtendimentoService {
 
     @Autowired
     private AtendimentoRepository atendimentoRepository;
+    private final static Logger logger = LoggerFactory.getLogger(AtendimentoService.class);
 
     public AtendimentoDto createAtendimento(AtendimentoCreateRequest atendimentoCreateRequest) {
         AtendimentoModel atendimentoModel = new AtendimentoModel();
@@ -29,26 +32,33 @@ public class AtendimentoService {
     }
 
     public List<AtendimentoDto> getAllAtendimentos() {
+        logger.info("Buscando todos os atendimentos");
         return atendimentoRepository.findAll().stream().map(this::toDto).collect(Collectors.toList());
     }
 
     public Optional<AtendimentoDto> getAtendimentoById(Long id) {
+        logger.info("Buscando atendimento de id {}", id);
         return atendimentoRepository.findById(id).map(this::toDto);
     }
 
     public AtendimentoDto updateAtendimento(Long id, AtendimentoCreateRequest atendimentoCreateRequest) {
+        logger.info("Buscando atendimento para atualizar de id {}", id);
         AtendimentoModel atendimentoModel = atendimentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Atendimento não encontrado"));
+        logger.info("Atendimento encontrado");
         atendimentoModel.setIdAgenda(atendimentoCreateRequest.getIdAgenda());
         atendimentoModel.setHistorico(atendimentoCreateRequest.getHistorico());
         atendimentoModel.setReceituario(atendimentoCreateRequest.getReceituario());
         atendimentoModel.setExames(atendimentoCreateRequest.getExames());
 
         AtendimentoModel updateAtendimento =  atendimentoRepository.save(atendimentoModel);
+        logger.info("Atendimento Realizado");
         return toDto(updateAtendimento);
     }
 
     public void deleteAtendimento(Long id) {
+        logger.info("Procurando atendimendo para remover de id {}", id);
         atendimentoRepository.deleteById(id);
+        logger.info("Atendimento removido");
     }
 
 
