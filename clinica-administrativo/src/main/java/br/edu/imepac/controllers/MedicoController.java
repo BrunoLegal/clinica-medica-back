@@ -3,6 +3,9 @@ package br.edu.imepac.controllers;
 import br.edu.imepac.dtos.MedicoCreateRequest;
 import br.edu.imepac.dtos.MedicoDto;
 import br.edu.imepac.services.MedicoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,12 @@ public class MedicoController {
 
     @Autowired
     private MedicoService medicoService;
+    @Operation(description = "Lista todos os medicos", tags = "Médico")
+    @ApiResponses(value = {
+            @ApiResponse( responseCode = "200", description = "medicos listados com sucesso"),
+            @ApiResponse( responseCode = "404", description = "medico nao encontrado"),
+            @ApiResponse( responseCode = "500", description = "erro do servidor")
+    })
     @GetMapping
     public ResponseEntity<List<MedicoDto>> listDoctors(){
         List<MedicoDto> list = medicoService.findAll();
@@ -33,6 +42,13 @@ public class MedicoController {
         }
     }
 
+    @Operation(description = "Lista um médico por id", tags = "Médico")
+    @ApiResponses(value = {
+            @ApiResponse( responseCode = "200", description = "medico encontrado com sucesso"),
+            @ApiResponse( responseCode = "404", description = "medico nao encontrado"),
+            @ApiResponse( responseCode = "500", description = "erro do servidor")
+    })
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<MedicoDto> findDoctor(@PathVariable Long id){
@@ -44,7 +60,12 @@ public class MedicoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
+    @Operation(description = "Registra um medico no banco de dados", tags = "Médico")
+    @ApiResponses(value = {
+            @ApiResponse( responseCode = "200", description = "medico salvo com sucesso"),
+            @ApiResponse( responseCode = "404", description = "medico nao encontrado"),
+            @ApiResponse( responseCode = "500", description = "erro do servidor")
+    })
 
     @PostMapping
     public ResponseEntity<MedicoDto> saveDoctor(@RequestBody MedicoCreateRequest medicoCreateRequest){
@@ -52,6 +73,12 @@ public class MedicoController {
         logger.info("Medico salvo: {}", medicoDto);
         return new ResponseEntity<>(medicoDto, HttpStatus.CREATED);
     }
+    @Operation(description = "Atualiza um medico no banco de dados", tags = "Médico")
+    @ApiResponses(value = {
+            @ApiResponse( responseCode = "200", description = "medico atualizado com sucesso"),
+            @ApiResponse( responseCode = "404", description = "medico nao encontrado"),
+            @ApiResponse( responseCode = "500", description = "erro do servidor")
+    })
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -66,6 +93,13 @@ public class MedicoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @Operation(description = "Deleta um medico do banco de dados por id", tags = "Médico")
+    @ApiResponses(value = {
+            @ApiResponse( responseCode = "200", description = "medico deletado com sucesso"),
+            @ApiResponse( responseCode = "404", description = "medico nao encontrado"),
+            @ApiResponse( responseCode = "500", description = "erro do servidor")
+    })
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
