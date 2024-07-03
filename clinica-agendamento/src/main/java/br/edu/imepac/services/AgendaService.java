@@ -7,6 +7,8 @@ import br.edu.imepac.models.AgendaConsulta;
 import br.edu.imepac.repositories.AgendaRepository;
 import br.edu.imepac.util.DateUtil;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +18,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-//TODO: Testar todos os metodos, foco no update
+
 
 @Service
 public class AgendaService {
+    private static final Logger logger = LoggerFactory.getLogger(AgendaService.class);
     @Autowired
     private AgendaRepository agendaRepository;
     @Autowired
@@ -33,6 +36,7 @@ public class AgendaService {
             agendaConsulta.setData(DateUtil.convertStringToSqlDate(agendaConsultaCreateRequest.getData()));
 
             AgendaConsulta savedAgenda = agendaRepository.save(agendaConsulta);
+            logger.info("Agendamento {} criado", savedAgenda);
             AgendaMapperDto savedAgendaMapperDto = mapper.map(savedAgenda, AgendaMapperDto.class);
             AgendaConsultaDto agendaConsultaDto = mapper.map(savedAgendaMapperDto, AgendaConsultaDto.class);
             agendaConsultaDto.setData(DateUtil.convertSqlDateToString(savedAgenda.getData()));
@@ -45,21 +49,25 @@ public class AgendaService {
 
     public Boolean isAvailable(String date, String hora){
         try {
+            logger.info("Verificando disponibilidade de data");
             Date sqlDate = DateUtil.convertStringToSqlDate(date);
             Optional<List<AgendaConsulta>> optional = agendaRepository.findByDataAndHoraAndCanceladoFalse(sqlDate, hora);
             if(optional.isPresent()){
                 List<AgendaConsulta> list = optional.get();
                 System.out.println(list.isEmpty());
+                logger.info("Data disponivel: {}", list.isEmpty());
                 return list.isEmpty();
             }else{
                 return true;
             }
         }catch (ParseException e){
+            logger.warn("Erro de conversão");
             return null;
         }
     }
 
     public List<AgendaConsultaDto> findAll(){
+        logger.info("Buscando Agendamentos");
         List<AgendaConsulta> list = agendaRepository.findAll();
         return list.stream().map(agenda -> {
             AgendaMapperDto agendaMapperDto = mapper.map(agenda, AgendaMapperDto.class);
@@ -70,10 +78,13 @@ public class AgendaService {
     }
 
     public AgendaConsultaDto findById(Long id){
+        logger.info("Buscando agendamento de id: {}", id);
         Optional<AgendaConsulta> optional = agendaRepository.findById(id);
         if(optional.isEmpty()){
+            logger.info("Agendamento nao encontrado");
             return null;
         }else{
+            logger.info("Agendamento encontrado");
             AgendaMapperDto agendaMapperDto = mapper.map(optional.get(), AgendaMapperDto.class);
             AgendaConsultaDto agendaConsultaDto = mapper.map(agendaMapperDto, AgendaConsultaDto.class);
             agendaConsultaDto.setData(DateUtil.convertSqlDateToString(optional.get().getData()));
@@ -82,10 +93,13 @@ public class AgendaService {
     }
 
     public AgendaConsultaDto update(Long id, AgendaConsultaDto agendaData) throws Exception{
+        logger.info("Buscando Agendamento para atualizar");
         Optional<AgendaConsulta> optional = agendaRepository.findById(id);
         if(optional.isEmpty()){
+            logger.info("Agendamento nao encontrado");
             return null;
         }else{
+            logger.info("Agendamento encontrado");
             if (isAvailable(agendaData.getData(), agendaData.getHora())){
                 AgendaConsulta agendaConsulta = optional.get();
 
@@ -110,6 +124,7 @@ public class AgendaService {
     }
 
     public AgendaConsultaDto setReturn(AgendaConsultaCreateRequest agendaConsultaCreateRequest) throws Exception{
+        logger.info("Criando novo retorno");
         if(isAvailable(agendaConsultaCreateRequest.getData(), agendaConsultaCreateRequest.getHora())){
             AgendaMapperDto agendaMapperDto = mapper.map(agendaConsultaCreateRequest, AgendaMapperDto.class);
             AgendaConsulta agendaConsulta = mapper.map(agendaMapperDto, AgendaConsulta.class);
@@ -126,10 +141,13 @@ public class AgendaService {
     }
 
     public AgendaConsultaDto cancelConsulta(Long id, String motivo){
+        logger.info("Tentando cancelar");
         Optional<AgendaConsulta> optional = agendaRepository.findById(id);
         if(optional.isEmpty()){
+            logger.info("Agendamento não encontrado");
             return null;
         }else{
+            logger.info("Agendamento encontrado");
             AgendaConsulta agendaConsulta = optional.get();
             System.out.println(motivo);
             agendaConsulta.setCancelado(true);
@@ -143,6 +161,8 @@ public class AgendaService {
         }
     }
     public void deleteConsulta(Long id){
+        logger.info("Deletando Agendamento de id: {}", id);
         agendaRepository.deleteById(id);
+        logger.info("Agendamento deletado");
     }
 }

@@ -19,10 +19,10 @@ public class AtendimentoService {
 
     public AtendimentoDto createAtendimento(AtendimentoCreateRequest atendimentoCreateRequest) {
         AtendimentoModel atendimentoModel = new AtendimentoModel();
-        atendimentoModel.setPacienteId(atendimentoCreateRequest.getPacienteId());
-        atendimentoModel.setMedicoId(atendimentoCreateRequest.getMedicoId());
-        atendimentoModel.setDataHora(atendimentoCreateRequest.getDataHora());
-        atendimentoModel.setDescricao(atendimentoCreateRequest.getDescricao());
+        atendimentoModel.setIdAgenda(atendimentoCreateRequest.getIdAgenda());
+        atendimentoModel.setHistorico(atendimentoCreateRequest.getHistorico());
+        atendimentoModel.setReceituario(atendimentoCreateRequest.getReceituario());
+        atendimentoModel.setExames(atendimentoCreateRequest.getExames());
 
         AtendimentoModel saveAtendimento = atendimentoRepository.save(atendimentoModel);
         return toDto(saveAtendimento);
@@ -30,6 +30,11 @@ public class AtendimentoService {
 
     public List<AtendimentoDto> getAllAtendimentos() {
         return atendimentoRepository.findAll().stream().map(this::toDto).collect(Collectors.toList());
+        /*List<AtendimentoModel> atendimentos = atendimentoRepository.findAll();
+        return atendimentos.stream().map(atendimento -> {
+            AtendimentoDto atendimentoDto = toDto(atendimento);
+            return atendimentoDto;
+        }).collect(Collectors.toList());*/
     }
 
     public Optional<AtendimentoDto> getAtendimentoById(Long id) {
@@ -38,10 +43,10 @@ public class AtendimentoService {
 
     public AtendimentoDto updateAtendimento(Long id, AtendimentoCreateRequest atendimentoCreateRequest) {
         AtendimentoModel atendimentoModel = atendimentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Atendimento não encontrado"));
-        atendimentoModel.setPacienteId(atendimentoCreateRequest.getPacienteId());
-        atendimentoModel.setMedicoId(atendimentoCreateRequest.getMedicoId());
-        atendimentoModel.setDataHora(atendimentoCreateRequest.getDataHora());
-        atendimentoModel.setDescricao(atendimentoCreateRequest.getDescricao());
+        atendimentoModel.setIdAgenda(atendimentoCreateRequest.getIdAgenda());
+        atendimentoModel.setHistorico(atendimentoCreateRequest.getHistorico());
+        atendimentoModel.setReceituario(atendimentoCreateRequest.getReceituario());
+        atendimentoModel.setExames(atendimentoCreateRequest.getExames());
 
         AtendimentoModel updateAtendimento =  atendimentoRepository.save(atendimentoModel);
         return toDto(updateAtendimento);
@@ -56,10 +61,10 @@ public class AtendimentoService {
     private AtendimentoDto toDto(AtendimentoModel atendimentoModel) {
         AtendimentoDto atendimentoDto = new AtendimentoDto();
         atendimentoDto.setId(atendimentoModel.getId());
-        atendimentoDto.setPacienteId(atendimentoModel.getPacienteId());
-        atendimentoDto.setMedicoId(atendimentoModel.getMedicoId());
-        atendimentoDto.setDataHora(atendimentoModel.getDataHora());
-        atendimentoDto.setDescricao(atendimentoModel.getDescricao());
+        atendimentoDto.setIdAgenda(atendimentoModel.getIdAgenda());
+        atendimentoDto.setHistorico(atendimentoModel.getHistorico());
+        atendimentoDto.setReceituario(atendimentoModel.getReceituario());
+        atendimentoDto.setExames(atendimentoModel.getExames());
 
         return atendimentoDto;
     }

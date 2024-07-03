@@ -1,5 +1,6 @@
 package br.edu.imepac.dtos;
 
+import br.edu.imepac.models.AgendaConsulta;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,12 +12,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AtendimentoCreateRequest {
-    @NotNull
-    private Long pacienteId;
-    @NotNull
-    private Long medicoId;
-    @NotNull
-    private LocalDateTime dataHora;
-    @NotNull
-    private String descricao;
+    private AgendaConsulta idAgenda;
+    private String historico;
+    private String receituario;
+    private String exames;
 }
