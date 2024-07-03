@@ -3,6 +3,9 @@ package br.edu.imepac.controllers;
 import br.edu.imepac.dtos.AgendaConsultaCreateRequest;
 import br.edu.imepac.dtos.AgendaConsultaDto;
 import br.edu.imepac.services.AgendaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +28,13 @@ public class AgendaController {
     @Autowired
     private AgendaService agendaService;
 
+    @Operation(description = "Lista todas as consultas agendadas", tags = "Agendamento")
+    @ApiResponses(value = {
+            @ApiResponse( responseCode = "200", description = "consultas listadas com sucesso"),
+            @ApiResponse( responseCode = "404", description = "consulta nao encontrada"),
+            @ApiResponse( responseCode = "500", description = "erro do servidor")
+    })
+
     @GetMapping
     public ResponseEntity<List<AgendaConsultaDto>> findAll(){
         List<AgendaConsultaDto> list = agendaService.findAll();
@@ -38,6 +48,13 @@ public class AgendaController {
         }
     }
 
+    @Operation(description = "Busca uma unica consulta por id", tags = "Agendamento")
+    @ApiResponses(value = {
+            @ApiResponse( responseCode = "200", description = "consulta encontrada com sucesso"),
+            @ApiResponse( responseCode = "404", description = "consulta nao encontrada"),
+            @ApiResponse( responseCode = "500", description = "erro do servidor")
+    })
+
     @GetMapping("/{id}")
     public ResponseEntity<AgendaConsultaDto> findById(@PathVariable Long id){
         AgendaConsultaDto agendaConsultaDto = agendaService.findById(id);
@@ -50,6 +67,14 @@ public class AgendaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @Operation(description = "Adiciona uma consulta agendada ao banco de dados", tags = "Agendamento")
+    @ApiResponses(value = {
+            @ApiResponse( responseCode = "200", description = "consulta registrada com sucesso"),
+            @ApiResponse( responseCode = "209", description = "Data não disponivel"),
+            @ApiResponse( responseCode = "404", description = "consulta nao encontrada"),
+            @ApiResponse( responseCode = "500", description = "erro do servidor")
+    })
 
     @PostMapping
     public ResponseEntity<AgendaConsultaDto> createConsulta(@RequestBody AgendaConsultaCreateRequest agendaConsultaCreateRequest){
@@ -68,6 +93,14 @@ public class AgendaController {
         }
     }
 
+    @Operation(description = "Atualiza uma consulta no banco de dados", tags = "Agendamento")
+    @ApiResponses(value = {
+            @ApiResponse( responseCode = "200", description = "consulta atualizada com sucesso"),
+            @ApiResponse( responseCode = "209", description = "Data não disponivel"),
+            @ApiResponse( responseCode = "404", description = "consulta nao encontrada"),
+            @ApiResponse( responseCode = "500", description = "erro do servidor")
+    })
+
     @PutMapping("/{id}")
     public ResponseEntity<AgendaConsultaDto> updateConsulta(@RequestBody AgendaConsultaDto agendaData, @PathVariable Long id){
         try {
@@ -85,6 +118,13 @@ public class AgendaController {
         }
     }
 
+    @Operation(description = "Cancela uma consulta", tags = "Agendamento")
+    @ApiResponses(value = {
+            @ApiResponse( responseCode = "200", description = "consulta cancelada com sucesso"),
+            @ApiResponse( responseCode = "404", description = "consulta nao encontrada"),
+            @ApiResponse( responseCode = "500", description = "erro do servidor")
+    })
+
     @PutMapping("/cancelar/{id}")
     public ResponseEntity<AgendaConsultaDto> cancelConsulta(@PathVariable Long id, @RequestBody String motivo){
         AgendaConsultaDto agendaConsultaDto = agendaService.cancelConsulta(id, motivo);
@@ -96,6 +136,13 @@ public class AgendaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @Operation(description = "Cria uma nova consulta marcada como retorno no banco de dados", tags = "Agendamento")
+    @ApiResponses(value = {
+            @ApiResponse( responseCode = "200", description = "retorno registrado com sucesso"),
+            @ApiResponse( responseCode = "209", description = "Data não disponivel"),
+            @ApiResponse( responseCode = "404", description = "consulta nao encontrada"),
+            @ApiResponse( responseCode = "500", description = "erro do servidor")
+    })
 
     @PostMapping("/retorno")
     public ResponseEntity<AgendaConsultaDto> scheduleReturn(@RequestBody AgendaConsultaCreateRequest agendaConsultaCreateRequest){
@@ -113,6 +160,14 @@ public class AgendaController {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
+
+    @Operation(description = "Remove uma consulta do banco de dados", tags = "Agendamento")
+    @ApiResponses(value = {
+            @ApiResponse( responseCode = "200", description = "consulta deletada com sucesso"),
+            @ApiResponse( responseCode = "209", description = "Data não disponivel"),
+            @ApiResponse( responseCode = "404", description = "consulta nao encontrada"),
+            @ApiResponse( responseCode = "500", description = "erro do servidor")
+    })
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
