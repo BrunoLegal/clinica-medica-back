@@ -14,14 +14,16 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import java.sql.Date;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class AgendaServiceTest {
@@ -196,7 +198,221 @@ public class AgendaServiceTest {
         List<AgendaConsulta> list = Arrays.asList(agendaConsulta1, agendaConsulta2);
 
         when(agendaRepository.findAll()).thenReturn(list);
-        when(modelMapper.map(any(), eq(AgendaMapperDto.class))).thenReturn(newAgendaMapperExample(1));
+        when(modelMapper.map(newAgendaConsultaExample(1), AgendaMapperDto.class)).thenReturn(newAgendaMapperExample(1));
+        when(modelMapper.map(newAgendaConsultaExample(2), AgendaMapperDto.class)).thenReturn(newAgendaMapperExample(2));
+        when(modelMapper.map(newAgendaMapperExample(1), AgendaConsultaDto.class)).thenReturn(newAgendaDtoExample(1));
+        when(modelMapper.map(newAgendaMapperExample(2), AgendaConsultaDto.class)).thenReturn(newAgendaDtoExample(2));
 
+
+        List<AgendaConsultaDto> result = agendaService.findAll();
+
+        assertEquals(2, result.size());
+        assertEquals(agendaConsulta1.getMedico(), result.get(0).getMedico());
+        assertEquals(agendaConsulta1.getUsuario(), result.get(0).getUsuario());
+        assertEquals(agendaConsulta1.getPaciente(), result.get(0).getPaciente());
+        try {
+            assertEquals(agendaConsulta1.getData(), DateUtil.convertStringToSqlDate(result.get(0).getData()));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(agendaConsulta1.getHora(), result.get(0).getHora());
+        assertEquals(agendaConsulta1.getRetorno(), result.get(0).getRetorno());
+        assertEquals(agendaConsulta1.getCancelado(), result.get(0).getCancelado());
+        assertEquals(agendaConsulta1.getMotivoCancelamento(), result.get(0).getMotivoCancelamento());
+
+
+    }
+
+    @Test
+    public void shoulFindById(){
+        Long id = 1L;
+
+        AgendaConsulta agendaConsulta = newAgendaConsultaExample(1);
+
+        when(agendaRepository.findById(id)).thenReturn(Optional.of(agendaConsulta));
+        when(modelMapper.map(any(AgendaConsulta.class), eq(AgendaMapperDto.class))).thenReturn(newAgendaMapperExample(1));
+        when(modelMapper.map(any(AgendaMapperDto.class), eq(AgendaConsultaDto.class))).thenReturn(newAgendaDtoExample(1));
+
+        AgendaConsultaDto result = agendaService.findById(id);
+
+        assertEquals(agendaConsulta.getId(), result.getId());
+        assertEquals(agendaConsulta.getUsuario(), result.getUsuario());
+        assertEquals(agendaConsulta.getPaciente(), result.getPaciente());
+        assertEquals(agendaConsulta.getMedico(), result.getMedico());
+        try {
+            assertEquals(agendaConsulta.getData(), DateUtil.convertStringToSqlDate(result.getData()));
+        }catch (ParseException e){
+
+        }
+        assertEquals(agendaConsulta.getHora(), result.getHora());
+        assertEquals(agendaConsulta.getRetorno(), result.getRetorno());
+        assertEquals(agendaConsulta.getCancelado(), result.getCancelado());
+        assertEquals(agendaConsulta.getMotivoCancelamento(), result.getMotivoCancelamento());
+
+    }
+    @Test
+    public void findByIdShouldReturnNull(){
+        Long id = 1L;
+
+        when(agendaRepository.findById(id)).thenReturn(Optional.empty());
+
+        AgendaConsultaDto result = agendaService.findById(id);
+
+        assertNull(result);
+        verify(agendaRepository, times(1)).findById(id);
+    }
+
+    @Test
+    public void shouldDelete(){
+        Long id = 1L;
+
+        doNothing().when(agendaRepository).deleteById(id);
+
+        agendaService.deleteConsulta(id);
+
+        verify(agendaRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    public void shouldUpdate(){
+        Long id = 1L;
+
+        AgendaConsultaDto parametro = newAgendaDtoExample(2);
+
+        AgendaConsulta respostaRepository = newAgendaConsultaExample(1);
+
+        when(agendaRepository.findById(id)).thenReturn(Optional.of(respostaRepository));
+        when(agendaRepository.save(any(AgendaConsulta.class))).thenReturn(respostaRepository);
+        when(modelMapper.map(any(AgendaConsulta.class), eq(AgendaMapperDto.class))).thenReturn(newAgendaMapperExample(2));
+        when(modelMapper.map(any(AgendaMapperDto.class), eq(AgendaConsultaDto.class))).thenReturn(newAgendaDtoExample(2));
+
+
+        try {
+            AgendaConsultaDto result = agendaService.update(id, parametro);
+            assertEquals(parametro.getUsuario(), result.getUsuario());
+            assertEquals(parametro.getPaciente(), result.getPaciente());
+            assertEquals(parametro.getMedico(), result.getMedico());
+            assertEquals(parametro.getData(), result.getData());
+            assertEquals(parametro.getHora(), result.getHora());
+            assertEquals(parametro.getRetorno(), result.getRetorno());
+            assertEquals(parametro.getCancelado(), result.getCancelado());
+            assertEquals(parametro.getMotivoCancelamento(), result.getMotivoCancelamento());
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+    }
+
+    @Test
+    public void updateShouldReturnNull(){
+        Long id = 1L;
+
+        AgendaConsultaDto parametro = newAgendaDtoExample(2);
+
+        when(agendaRepository.findById(id)).thenReturn(Optional.empty());
+        try {
+            AgendaConsultaDto result = agendaService.update(id, parametro);
+            assertNull(result);
+            verify(agendaRepository, times(1)).findById(id);
+            verify(agendaRepository, times(0)).save(any(AgendaConsulta.class));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+    @Test
+    public void isAvailableReturnsTrue() throws ParseException{
+
+
+        Date dataParam = DateUtil.convertStringToSqlDate("10/10/2020");
+        String horaParam = "10";
+
+
+        when(agendaRepository.findByDataAndHoraAndCanceladoFalse(dataParam, horaParam)).thenReturn(Optional.empty());
+
+        Boolean result = agendaService.isAvailable("10/10/2020", "10");
+        assertTrue(result);
+        verify(agendaRepository, times(1)).findByDataAndHoraAndCanceladoFalse(dataParam, horaParam);
+
+    }
+
+    @Test
+    public void isAvailableReturnsFalse() throws ParseException{
+        Date dataParam = DateUtil.convertStringToSqlDate("10/10/2020");
+        String horaParam = "10";
+
+        List<AgendaConsulta> list = List.of(newAgendaConsultaExample(1));
+
+        when(agendaRepository.findByDataAndHoraAndCanceladoFalse(dataParam, horaParam)).thenReturn(Optional.of(list));
+
+        Boolean result = agendaService.isAvailable("10/10/2020", "10");
+
+        assertFalse(result);
+        verify(agendaRepository, times(1)).findByDataAndHoraAndCanceladoFalse(dataParam, horaParam);
+
+    }
+
+    @Test
+    public void shouldReturn(){
+        try {
+            AgendaConsultaDto agendaConsultaDto = newAgendaDtoExample(1);
+            agendaConsultaDto.setRetorno(true);
+            AgendaConsultaCreateRequest agendaConsultaCreateRequest = newAgendaCreateRequestExample(1);
+            when(agendaRepository.save(any(AgendaConsulta.class))).thenReturn(newAgendaConsultaExample(1));
+            when(modelMapper.map(any(AgendaConsultaCreateRequest.class), eq(AgendaMapperDto.class))).thenReturn(newAgendaMapperExample(1));
+            when(modelMapper.map(any(AgendaMapperDto.class), eq(AgendaConsulta.class))).thenReturn(newAgendaConsultaExample(1));
+            when(modelMapper.map(any(AgendaConsulta.class), eq(AgendaMapperDto.class))).thenReturn(newAgendaMapperExample(1));
+            when(modelMapper.map(any(AgendaMapperDto.class), eq(AgendaConsultaDto.class))).thenReturn(agendaConsultaDto);
+
+
+
+            AgendaConsultaDto result = agendaService.setReturn(agendaConsultaCreateRequest);
+
+            assertEquals(agendaConsultaCreateRequest.getUsuario(), result.getUsuario());
+            assertEquals(agendaConsultaCreateRequest.getPaciente(), result.getPaciente());
+            assertEquals(agendaConsultaCreateRequest.getMedico(), result.getMedico());
+            assertEquals(agendaConsultaCreateRequest.getData(), result.getData());
+            assertEquals(agendaConsultaCreateRequest.getHora(), result.getHora());
+            assertEquals(true, result.getRetorno());
+            assertEquals(agendaConsultaCreateRequest.getCancelado(), result.getCancelado());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @Test
+    public void shouldCancel(){
+        try {
+            Long id = 1L;
+            String motivo = "teste";
+            AgendaConsultaDto agendaConsultaDto = newAgendaDtoExample(1);
+            agendaConsultaDto.setCancelado(true);
+            agendaConsultaDto.setMotivoCancelamento(motivo);
+            AgendaConsultaCreateRequest agendaConsultaCreateRequest = newAgendaCreateRequestExample(1);
+            when(agendaRepository.findById(id)).thenReturn(Optional.of(newAgendaConsultaExample(1)));
+            when(agendaRepository.save(any(AgendaConsulta.class))).thenReturn(newAgendaConsultaExample(1));
+
+            when(modelMapper.map(any(AgendaConsulta.class), eq(AgendaMapperDto.class))).thenReturn(newAgendaMapperExample(1));
+            when(modelMapper.map(any(AgendaMapperDto.class), eq(AgendaConsultaDto.class))).thenReturn(agendaConsultaDto);
+
+
+
+            AgendaConsultaDto result = agendaService.cancelConsulta(id, motivo);
+
+            assertEquals(agendaConsultaCreateRequest.getUsuario(), result.getUsuario());
+            assertEquals(agendaConsultaCreateRequest.getPaciente(), result.getPaciente());
+            assertEquals(agendaConsultaCreateRequest.getMedico(), result.getMedico());
+            assertEquals(agendaConsultaCreateRequest.getData(), result.getData());
+            assertEquals(agendaConsultaCreateRequest.getHora(), result.getHora());
+            assertEquals(agendaConsultaCreateRequest.getRetorno(), result.getRetorno());
+            assertEquals(true, result.getCancelado());
+            assertEquals("teste", result.getMotivoCancelamento());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
