@@ -30,6 +30,11 @@ public class AtendimentoService {
 
     public List<AtendimentoDto> getAllAtendimentos() {
         return atendimentoRepository.findAll().stream().map(this::toDto).collect(Collectors.toList());
+        /*List<AtendimentoModel> atendimentos = atendimentoRepository.findAll();
+        return atendimentos.stream().map(atendimento -> {
+            AtendimentoDto atendimentoDto = toDto(atendimento);
+            return atendimentoDto;
+        }).collect(Collectors.toList());*/
     }
 
     public Optional<AtendimentoDto> getAtendimentoById(Long id) {
